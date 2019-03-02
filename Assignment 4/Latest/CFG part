@@ -1,0 +1,197 @@
+class Block:
+    def __init__(self, statements = None, children=None, type = None, parents2 = None, parents = None, id = None, visited = None):
+         self.type = type
+
+         if statements:
+              self.statements = statements
+         else:
+              self.statements = [ ]
+
+         if children:
+              self.children = children
+         else:
+              self.children = [ ]
+
+         self.type = ""
+         self.id = ""
+         self.parents = 0
+         self.parents2 = 0
+         self.visited = 0
+
+register_counter = 0
+
+def get_register():
+    global register_counter
+    return str(register_counter)
+
+def cfg(s, block, endblock):
+    if s.type is 'stmt_list':
+        for child in s.children:
+            if child.type is 'ASGN':
+                process_asgn(child, block, 0)
+            elif child.type is 'WHILE':
+                conditionblock = Block()
+                nextblock = Block()
+                block.children.append(conditionblock)
+                conditionblock.parents += 1
+                conditionblock.parents2 += 1
+                while_process(child, conditionblock, nextblock)
+                block = nextblock
+            elif child.type is 'IF':
+                conditionblock = Block()
+                nextblock = Block()
+                block.children.append(conditionblock)
+                conditionblock.parents += 1
+                conditionblock.parents2 += 1
+                if_process(child, conditionblock, nextblock)
+                block = nextblock
+    else:
+        if s.type is 'ASGN':
+            process_asgn(s, block, 0)
+        elif s.type is 'WHILE':
+            conditionblock = Block()
+            nextblock = Block()
+            block.children.append(conditionblock)
+            conditionblock.parents += 1
+            conditionblock.parents2 += 1
+            while_process(s, conditionblock, nextblock)
+            block = nextblock
+        elif s.type is 'IF':
+            conditionblock = Block()
+            nextblock = Block()
+            block.children.append(conditionblock)
+            conditionblock.parents += 1
+            conditionblock.parents2 += 1
+            if_process(s, conditionblock, nextblock)
+            block = nextblock
+    block.children.append(endblock)
+    if endblock.type != 'WHILE':
+    	endblock.parents += 1
+    	endblock.parents2 += 1
+
+def process_asgn(s, block, k):
+    global register_counter
+    if isinstance(s, Node):
+        if s.type is 'ASGN':
+            LHS = process_variable(s.children[0])
+            RHS = process_asgn(s.children[1], block, k+1)
+            result = LHS + ' = ' + RHS
+            block.statements.append(result)
+
+        if s.type is 'PLUS' or s.type is 'MINUS' or s.type is 'MUL' or s.type is 'DIV':
+            RHS1 = process_asgn(s.children[0], block, k+1)
+            RHS2 = process_asgn(s.children[1], block, k+1)
+            LHS = "t" + get_register()
+            register_counter+=1
+            result = LHS + ' = ' + RHS1 + ' ' + s.leaf + ' ' + RHS2
+            block.statements.append(result)
+            return LHS
+
+        if s.type is 'UMINUS':
+            RHS = process_asgn(s.children[0], block, k+1)
+            LHS = "t" + get_register()
+            register_counter+=1
+            result = LHS + ' = ' + s.leaf + ' ' + RHS
+            block.statements.append(result)
+            return LHS
+
+        if s.type is 'DEREF' or s.type is 'ADDR':
+            return process_variable(s)
+
+    else:
+        return process_core(s)
+
+
+def while_process(s, block, nextblock):
+    block.type = 'WHILE'
+    condition_register = process_condition(s.children[0], block, 0)
+
+    block.statements.append("if(" + condition_register + ") goto ")
+    block.statements.append("else goto ")
+
+    childblock = Block()
+    cfg(s.children[1], childblock, block)
+
+    block.children.append(childblock)
+    childblock.parents += 1
+    childblock.parents2 += 1
+    block.children.append(nextblock)
+    nextblock.parents += 1
+    nextblock.parents2 += 1
+
+def if_process(s, block, nextblock):
+    block.type = 'IF'
+    condition_register = process_condition(s.children[0], block, 0)
+
+    block.statements.append("if(" + condition_register + ") goto ")
+    block.statements.append("else goto ")
+
+    if len(s.children) == 2:
+        thenblock = Block()
+        cfg(s.children[1], thenblock, nextblock)
+        block.children.append(thenblock)
+        thenblock.parents += 1
+        thenblock.parents2 += 1
+        block.children.append(nextblock)
+        nextblock.parents += 1
+        nextblock.parents2 += 1
+
+    elif len(s.children) == 3:
+        thenblock = Block()
+        elseblock = Block()
+        cfg(s.children[1], thenblock, nextblock)
+        cfg(s.children[2], elseblock, nextblock)
+        block.children.append(thenblock)
+        thenblock.parents += 1
+        thenblock.parents2 += 1
+        block.children.append(elseblock)
+        elseblock.parents += 1
+        elseblock.parents2 += 1
+
+def process_condition(s, block, k):
+    global register_counter
+    if s.type is "AND" or s.type is "OR" :
+        RHS1 = process_condition(s.children[0], block, k+1)
+        RHS2 = process_condition(s.children[1], block, k+1)
+        LHS = "t" + get_register()
+        register_counter+=1
+        result = LHS + ' = ' + RHS1 + ' ' + s.leaf + ' ' + RHS2
+        block.statements.append(result)
+        return LHS
+
+    elif s.type is 'NOT':
+        RHS = process_condition(s.children[0], block, k+1)
+        LHS = "t" + get_register()
+        register_counter+=1
+        result = LHS + ' = ' + s.leaf + ' ' + RHS
+        block.statements.append(result)
+        return LHS
+
+    else:
+        return process_condition_unary(s, block, k)
+
+def process_condition_unary(s, block, k):
+    global register_counter
+    if isinstance(s, Node):
+        if s.type is 'GT' or s.type is 'LT' or s.type is 'GE' or s.type is 'LE' or s.type is 'EQ' or s.type is 'NE':
+            RHS1 = process_asgn(s.children[0], block, k+1)
+            RHS2 = process_asgn(s.children[1], block, k+1)
+            LHS = "t" + get_register()
+            register_counter += 1
+            result = LHS + ' = ' + RHS1 + ' ' + s.leaf + ' ' + RHS2
+            block.statements.append(result)
+            return LHS
+        else:
+            return process_asgn(s, block, k)
+
+def process_variable(s):
+    if isinstance(s, Node):
+        if s.type is 'DEREF' or s.type is 'ADDR':
+            return s.leaf + process_variable(s.children[0])
+    else:
+        return process_core(s)
+
+def process_core(s):
+    first = s.find('(')
+    last = s.find(')')
+    return s[first+1:last]

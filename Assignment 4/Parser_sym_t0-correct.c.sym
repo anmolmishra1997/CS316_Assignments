@@ -1,0 +1,27 @@
+Procedure table :-
+-----------------------------------------------------------------
+Name		|	Return Type	|	Parameter List
+func1		|	void	|	int *a, int *b
+func2		|	int*	|	int *a, int *b
+-----------------------------------------------------------------
+Variable table :- 
+-----------------------------------------------------------------
+Name	|	Scope		|	Base Type	|	Derived Type
+-----------------------------------------------------------------
+g	|	global		|	int	|	*
+var2	|	global		|	float	|	
+g3	|	global		|	int	|	*
+var1	|	global		|	float	|	*
+l3	|	global		|	int	|	
+b	|	func1		|	int	|	*
+a	|	func1		|	int	|	*
+h	|	func1		|	int	|	**
+c	|	func1		|	int	|	
+b	|	main		|	int	|	*
+a	|	main		|	int	|	*
+h	|	main		|	int	|	*
+b	|	func2		|	int	|	*
+a	|	func2		|	int	|	*
+h	|	func2		|	int	|	*
+-----------------------------------------------------------------
+-----------------------------------------------------------------

@@ -1,0 +1,92 @@
+program : VOID MAIN LPAREN RPAREN body
+
+body : LCURLY stmt_list RCURLY
+        | LCURLY RCURLY
+
+stmt_list : stmt stmt_list
+            | stmt
+
+stmt : matched_stmt
+    |  unmatched_stmt
+
+matched_stmt : assign
+    | declaration
+    | matched_decision
+    | loop
+
+unmatched_stmt : unmatched_decision
+
+assign : L1 EQUALS R1 SEMICOLON
+        | L2 EQUALS R2 SEMICOLON
+
+L1 : NAME
+
+R1 : pid
+    | NAME
+
+L2 : STAR pid
+    | STAR NAME
+
+R2 : pid
+    | NUMBER
+    | NAME
+
+R1 : R1 + ALLNUM
+    | R1 - ALLNUM
+    | R1 * ALLNUM %prec MULTIPLY
+    | R1 / ALLNUM
+    | ALLNUM + R1
+    | ALLNUM - R1
+    | ALLNUM * R1
+    | ALLNUM / R1
+    | R1 + R1
+    | R1 - R1
+    | R1 * R1
+    | R1 / R1
+
+R1 : -R1
+
+R2 : R2 + R2
+    | R2 - R2
+    | R2 * R2
+    | R2 / R2
+
+R2 : -R2
+
+ALLNUM : NUM
+    | MINUS NUM %prec UNARY
+
+pid : STAR pid
+    | AMPERSAND pid
+    | STAR NAME
+    | AMPERSAND NAME
+
+declaration : INT varlist SEMICOLON
+
+varlist : var COMMA varlist
+        | var
+
+var : STAR var
+    | NAME
+
+loop : WHILE LPAREN condition RPAREN body
+
+condition : condition && condition
+          | condition || condition
+
+condition : R2 > R2
+          | R2 < R2
+          | R2 >= R2
+          | R2 <= R2
+          | R2 != R2
+          | R2 == R2
+
+matched_decision :  IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+        | IF LPAREN condition RPAREN matched_stmt ELSE body
+        | IF LPAREN condition RPAREN body ELSE matched_stmt
+        | IF LPAREN condition RPAREN body ELSE body
+
+unmatched_decision : IF LPAREN condition RPAREN stmt
+                  | IF LPAREN condition RPAREN body
+                  | IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+                  | IF LPAREN condition RPAREN body ELSE unmatched_stmt

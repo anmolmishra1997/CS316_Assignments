@@ -1,0 +1,4342 @@
+Created by PLY version 3.10 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> block_list
+Rule 2     block_list -> basic_block block_list
+Rule 3     block_list -> basic_block
+Rule 4     basic_block -> declaration
+Rule 5     basic_block -> function
+Rule 6     basic_block -> function_prototype
+Rule 7     function -> TYPE var seen_FM LPAREN parameter_list RPAREN function_body
+Rule 8     function -> VOID NAME seen_FM LPAREN parameter_list RPAREN function_body
+Rule 9     function -> TYPE var seen_FM LPAREN RPAREN function_body
+Rule 10    function -> VOID NAME seen_FM LPAREN RPAREN function_body
+Rule 11    function -> VOID MAIN seen_FM LPAREN RPAREN body
+Rule 12    seen_FM -> <empty>
+Rule 13    function_prototype -> TYPE var seen_FM LPAREN parameter_list RPAREN SEMICOLON
+Rule 14    function_prototype -> TYPE var seen_FM LPAREN RPAREN SEMICOLON
+Rule 15    function_prototype -> VOID NAME seen_FM LPAREN parameter_list RPAREN SEMICOLON
+Rule 16    function_prototype -> VOID NAME seen_FM LPAREN RPAREN SEMICOLON
+Rule 17    parameter_list -> TYPE var COMMA parameter_list
+Rule 18    parameter_list -> TYPE var
+Rule 19    TYPE -> INT
+Rule 20    TYPE -> FLOAT
+Rule 21    function_body -> LCURLY stmt_list return_stmt RCURLY
+Rule 22    function_body -> body
+Rule 23    return_stmt -> RETURN SEMICOLON
+Rule 24    return_stmt -> RETURN R2 SEMICOLON
+Rule 25    body -> LCURLY stmt_list RCURLY
+Rule 26    body -> LCURLY RCURLY
+Rule 27    stmt_list -> stmt stmt_list
+Rule 28    stmt_list -> stmt
+Rule 29    stmt -> matched_stmt
+Rule 30    stmt -> unmatched_stmt
+Rule 31    matched_stmt -> assign
+Rule 32    matched_stmt -> declaration
+Rule 33    matched_stmt -> matched_decision
+Rule 34    matched_stmt -> matched_loop
+Rule 35    unmatched_stmt -> unmatched_decision
+Rule 36    unmatched_stmt -> unmatched_loop
+Rule 37    assign -> L1 EQUALS R1 SEMICOLON
+Rule 38    assign -> L2 EQUALS R2 SEMICOLON
+Rule 39    L1 -> NAME
+Rule 40    R1 -> R1 PLUS ALLNUM
+Rule 41    R1 -> R1 MINUS ALLNUM
+Rule 42    R1 -> R1 STAR ALLNUM
+Rule 43    R1 -> R1 DIVIDE ALLNUM
+Rule 44    R1 -> ALLNUM PLUS R1
+Rule 45    R1 -> ALLNUM MINUS R1
+Rule 46    R1 -> ALLNUM STAR R1
+Rule 47    R1 -> ALLNUM DIVIDE R1
+Rule 48    R1 -> R1 PLUS R1
+Rule 49    R1 -> R1 MINUS R1
+Rule 50    R1 -> R1 STAR R1
+Rule 51    R1 -> R1 DIVIDE R1
+Rule 52    R1 -> LPAREN R1 RPAREN
+Rule 53    R1 -> MINUS R1
+Rule 54    R1 -> PName
+Rule 55    R1 -> function_call
+Rule 56    R1 -> NAME
+Rule 57    ALLNUM -> NUMBER
+Rule 58    ALLNUM -> MINUS ALLNUM
+Rule 59    L2 -> STAR L2
+Rule 60    L2 -> STAR NAME
+Rule 61    R2 -> R2 PLUS R2
+Rule 62    R2 -> R2 MINUS R2
+Rule 63    R2 -> R2 STAR R2
+Rule 64    R2 -> R2 DIVIDE R2
+Rule 65    R2 -> LPAREN R2 RPAREN
+Rule 66    R2 -> MINUS R2
+Rule 67    R2 -> PName
+Rule 68    R2 -> function_call
+Rule 69    R2 -> NAME
+Rule 70    R2 -> NUMBER
+Rule 71    PName -> STAR PName
+Rule 72    PName -> STAR NAME
+Rule 73    PName -> AMPERSAND NAME
+Rule 74    function_call -> NAME LPAREN arg_list RPAREN
+Rule 75    function_call -> NAME LPAREN RPAREN
+Rule 76    arg_list -> R2 COMMA arg_list
+Rule 77    arg_list -> R2
+Rule 78    declaration -> TYPE varlist SEMICOLON
+Rule 79    varlist -> var COMMA varlist
+Rule 80    varlist -> var
+Rule 81    var -> STAR var
+Rule 82    var -> NAME
+Rule 83    matched_loop -> WHILE LPAREN condition RPAREN matched_stmt
+Rule 84    matched_loop -> WHILE LPAREN condition RPAREN body
+Rule 85    matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON
+Rule 86    unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt
+Rule 87    condition -> condition AND condition
+Rule 88    condition -> condition OR condition
+Rule 89    condition -> LPAREN condition RPAREN
+Rule 90    condition -> NOT condition
+Rule 91    condition -> R2 GT R2
+Rule 92    condition -> R2 LT R2
+Rule 93    condition -> R2 GE R2
+Rule 94    condition -> R2 LE R2
+Rule 95    condition -> R2 EQ R2
+Rule 96    condition -> R2 NE R2
+Rule 97    matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+Rule 98    matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body
+Rule 99    matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt
+Rule 100   matched_decision -> IF LPAREN condition RPAREN body ELSE body
+Rule 101   matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+Rule 102   matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON
+Rule 103   matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+Rule 104   matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body
+Rule 105   matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+Rule 106   unmatched_decision -> IF LPAREN condition RPAREN stmt
+Rule 107   unmatched_decision -> IF LPAREN condition RPAREN body
+Rule 108   unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON
+Rule 109   unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+Rule 110   unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt
+Rule 111   unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+
+Terminals, with rules where they appear
+
+AMPERSAND            : 73
+AND                  : 87
+COMMA                : 17 76 79
+DIVIDE               : 43 47 51 64
+ELSE                 : 97 98 99 100 101 102 103 104 105 109 110 111
+EQ                   : 95
+EQUALS               : 37 38
+FLOAT                : 20
+GE                   : 93
+GT                   : 91
+IF                   : 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111
+INT                  : 19
+LCURLY               : 21 25 26
+LE                   : 94
+LPAREN               : 7 8 9 10 11 13 14 15 16 52 65 74 75 83 84 85 86 89 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111
+LT                   : 92
+MAIN                 : 11
+MINUS                : 41 45 49 53 58 62 66
+NAME                 : 8 10 15 16 39 56 60 69 72 73 74 75 82
+NE                   : 96
+NOT                  : 90
+NUMBER               : 57 70
+OR                   : 88
+PLUS                 : 40 44 48 61
+RCURLY               : 21 25 26
+RETURN               : 23 24
+RPAREN               : 7 8 9 10 11 13 14 15 16 52 65 74 75 83 84 85 86 89 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111
+SEMICOLON            : 13 14 15 16 23 24 37 38 78 85 101 102 103 104 105 105 108 111
+STAR                 : 42 46 50 59 60 63 71 72 81
+VOID                 : 8 10 11 15 16
+WHILE                : 83 84 85 86
+error                : 
+
+Nonterminals, with rules where they appear
+
+ALLNUM               : 40 41 42 43 44 45 46 47 58
+L1                   : 37
+L2                   : 38 59
+PName                : 54 67 71
+R1                   : 37 40 41 42 43 44 45 46 47 48 48 49 49 50 50 51 51 52 53
+R2                   : 24 38 61 61 62 62 63 63 64 64 65 66 76 77 91 91 92 92 93 93 94 94 95 95 96 96
+TYPE                 : 7 9 13 14 17 18 78
+arg_list             : 74 76
+assign               : 31
+basic_block          : 2 3
+block_list           : 1 2
+body                 : 11 22 84 98 99 100 100 102 104 107 110
+condition            : 83 84 85 86 87 87 88 88 89 90 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111
+declaration          : 4 32
+function             : 5
+function_body        : 7 8 9 10
+function_call        : 55 68
+function_prototype   : 6
+matched_decision     : 33
+matched_loop         : 34
+matched_stmt         : 29 83 97 97 98 99 101 103 109
+parameter_list       : 7 8 13 15 17
+program              : 0
+return_stmt          : 21
+seen_FM              : 7 8 9 10 11 13 14 15 16
+stmt                 : 27 28 106
+stmt_list            : 21 25 27
+unmatched_decision   : 35
+unmatched_loop       : 36
+unmatched_stmt       : 30 86 109 110 111
+var                  : 7 9 13 14 17 18 79 80 81
+varlist              : 78 79
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . block_list
+    (2) block_list -> . basic_block block_list
+    (3) block_list -> . basic_block
+    (4) basic_block -> . declaration
+    (5) basic_block -> . function
+    (6) basic_block -> . function_prototype
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (7) function -> . TYPE var seen_FM LPAREN parameter_list RPAREN function_body
+    (8) function -> . VOID NAME seen_FM LPAREN parameter_list RPAREN function_body
+    (9) function -> . TYPE var seen_FM LPAREN RPAREN function_body
+    (10) function -> . VOID NAME seen_FM LPAREN RPAREN function_body
+    (11) function -> . VOID MAIN seen_FM LPAREN RPAREN body
+    (13) function_prototype -> . TYPE var seen_FM LPAREN parameter_list RPAREN SEMICOLON
+    (14) function_prototype -> . TYPE var seen_FM LPAREN RPAREN SEMICOLON
+    (15) function_prototype -> . VOID NAME seen_FM LPAREN parameter_list RPAREN SEMICOLON
+    (16) function_prototype -> . VOID NAME seen_FM LPAREN RPAREN SEMICOLON
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    VOID            shift and go to state 7
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    program                        shift and go to state 2
+    declaration                    shift and go to state 4
+    basic_block                    shift and go to state 5
+    block_list                     shift and go to state 6
+    function_prototype             shift and go to state 8
+    function                       shift and go to state 9
+    TYPE                           shift and go to state 10
+
+state 1
+
+    (20) TYPE -> FLOAT .
+
+    STAR            reduce using rule 20 (TYPE -> FLOAT .)
+    NAME            reduce using rule 20 (TYPE -> FLOAT .)
+
+
+state 2
+
+    (0) S' -> program .
+
+
+
+state 3
+
+    (19) TYPE -> INT .
+
+    STAR            reduce using rule 19 (TYPE -> INT .)
+    NAME            reduce using rule 19 (TYPE -> INT .)
+
+
+state 4
+
+    (4) basic_block -> declaration .
+
+    VOID            reduce using rule 4 (basic_block -> declaration .)
+    INT             reduce using rule 4 (basic_block -> declaration .)
+    FLOAT           reduce using rule 4 (basic_block -> declaration .)
+    $end            reduce using rule 4 (basic_block -> declaration .)
+
+
+state 5
+
+    (2) block_list -> basic_block . block_list
+    (3) block_list -> basic_block .
+    (2) block_list -> . basic_block block_list
+    (3) block_list -> . basic_block
+    (4) basic_block -> . declaration
+    (5) basic_block -> . function
+    (6) basic_block -> . function_prototype
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (7) function -> . TYPE var seen_FM LPAREN parameter_list RPAREN function_body
+    (8) function -> . VOID NAME seen_FM LPAREN parameter_list RPAREN function_body
+    (9) function -> . TYPE var seen_FM LPAREN RPAREN function_body
+    (10) function -> . VOID NAME seen_FM LPAREN RPAREN function_body
+    (11) function -> . VOID MAIN seen_FM LPAREN RPAREN body
+    (13) function_prototype -> . TYPE var seen_FM LPAREN parameter_list RPAREN SEMICOLON
+    (14) function_prototype -> . TYPE var seen_FM LPAREN RPAREN SEMICOLON
+    (15) function_prototype -> . VOID NAME seen_FM LPAREN parameter_list RPAREN SEMICOLON
+    (16) function_prototype -> . VOID NAME seen_FM LPAREN RPAREN SEMICOLON
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    $end            reduce using rule 3 (block_list -> basic_block .)
+    VOID            shift and go to state 7
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    declaration                    shift and go to state 4
+    basic_block                    shift and go to state 5
+    block_list                     shift and go to state 11
+    function_prototype             shift and go to state 8
+    function                       shift and go to state 9
+    TYPE                           shift and go to state 10
+
+state 6
+
+    (1) program -> block_list .
+
+    $end            reduce using rule 1 (program -> block_list .)
+
+
+state 7
+
+    (8) function -> VOID . NAME seen_FM LPAREN parameter_list RPAREN function_body
+    (10) function -> VOID . NAME seen_FM LPAREN RPAREN function_body
+    (11) function -> VOID . MAIN seen_FM LPAREN RPAREN body
+    (15) function_prototype -> VOID . NAME seen_FM LPAREN parameter_list RPAREN SEMICOLON
+    (16) function_prototype -> VOID . NAME seen_FM LPAREN RPAREN SEMICOLON
+
+    NAME            shift and go to state 13
+    MAIN            shift and go to state 12
+
+
+state 8
+
+    (6) basic_block -> function_prototype .
+
+    VOID            reduce using rule 6 (basic_block -> function_prototype .)
+    INT             reduce using rule 6 (basic_block -> function_prototype .)
+    FLOAT           reduce using rule 6 (basic_block -> function_prototype .)
+    $end            reduce using rule 6 (basic_block -> function_prototype .)
+
+
+state 9
+
+    (5) basic_block -> function .
+
+    VOID            reduce using rule 5 (basic_block -> function .)
+    INT             reduce using rule 5 (basic_block -> function .)
+    FLOAT           reduce using rule 5 (basic_block -> function .)
+    $end            reduce using rule 5 (basic_block -> function .)
+
+
+state 10
+
+    (78) declaration -> TYPE . varlist SEMICOLON
+    (7) function -> TYPE . var seen_FM LPAREN parameter_list RPAREN function_body
+    (9) function -> TYPE . var seen_FM LPAREN RPAREN function_body
+    (13) function_prototype -> TYPE . var seen_FM LPAREN parameter_list RPAREN SEMICOLON
+    (14) function_prototype -> TYPE . var seen_FM LPAREN RPAREN SEMICOLON
+    (79) varlist -> . var COMMA varlist
+    (80) varlist -> . var
+    (81) var -> . STAR var
+    (82) var -> . NAME
+
+    STAR            shift and go to state 17
+    NAME            shift and go to state 15
+
+    var                            shift and go to state 14
+    varlist                        shift and go to state 16
+
+state 11
+
+    (2) block_list -> basic_block block_list .
+
+    $end            reduce using rule 2 (block_list -> basic_block block_list .)
+
+
+state 12
+
+    (11) function -> VOID MAIN . seen_FM LPAREN RPAREN body
+    (12) seen_FM -> .
+
+    LPAREN          reduce using rule 12 (seen_FM -> .)
+
+    seen_FM                        shift and go to state 18
+
+state 13
+
+    (8) function -> VOID NAME . seen_FM LPAREN parameter_list RPAREN function_body
+    (10) function -> VOID NAME . seen_FM LPAREN RPAREN function_body
+    (15) function_prototype -> VOID NAME . seen_FM LPAREN parameter_list RPAREN SEMICOLON
+    (16) function_prototype -> VOID NAME . seen_FM LPAREN RPAREN SEMICOLON
+    (12) seen_FM -> .
+
+    LPAREN          reduce using rule 12 (seen_FM -> .)
+
+    seen_FM                        shift and go to state 19
+
+state 14
+
+    (7) function -> TYPE var . seen_FM LPAREN parameter_list RPAREN function_body
+    (9) function -> TYPE var . seen_FM LPAREN RPAREN function_body
+    (13) function_prototype -> TYPE var . seen_FM LPAREN parameter_list RPAREN SEMICOLON
+    (14) function_prototype -> TYPE var . seen_FM LPAREN RPAREN SEMICOLON
+    (79) varlist -> var . COMMA varlist
+    (80) varlist -> var .
+    (12) seen_FM -> .
+
+    COMMA           shift and go to state 20
+    SEMICOLON       reduce using rule 80 (varlist -> var .)
+    LPAREN          reduce using rule 12 (seen_FM -> .)
+
+    seen_FM                        shift and go to state 21
+
+state 15
+
+    (82) var -> NAME .
+
+    COMMA           reduce using rule 82 (var -> NAME .)
+    LPAREN          reduce using rule 82 (var -> NAME .)
+    SEMICOLON       reduce using rule 82 (var -> NAME .)
+    RPAREN          reduce using rule 82 (var -> NAME .)
+
+
+state 16
+
+    (78) declaration -> TYPE varlist . SEMICOLON
+
+    SEMICOLON       shift and go to state 22
+
+
+state 17
+
+    (81) var -> STAR . var
+    (81) var -> . STAR var
+    (82) var -> . NAME
+
+    STAR            shift and go to state 17
+    NAME            shift and go to state 15
+
+    var                            shift and go to state 23
+
+state 18
+
+    (11) function -> VOID MAIN seen_FM . LPAREN RPAREN body
+
+    LPAREN          shift and go to state 24
+
+
+state 19
+
+    (8) function -> VOID NAME seen_FM . LPAREN parameter_list RPAREN function_body
+    (10) function -> VOID NAME seen_FM . LPAREN RPAREN function_body
+    (15) function_prototype -> VOID NAME seen_FM . LPAREN parameter_list RPAREN SEMICOLON
+    (16) function_prototype -> VOID NAME seen_FM . LPAREN RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 25
+
+
+state 20
+
+    (79) varlist -> var COMMA . varlist
+    (79) varlist -> . var COMMA varlist
+    (80) varlist -> . var
+    (81) var -> . STAR var
+    (82) var -> . NAME
+
+    STAR            shift and go to state 17
+    NAME            shift and go to state 15
+
+    var                            shift and go to state 26
+    varlist                        shift and go to state 27
+
+state 21
+
+    (7) function -> TYPE var seen_FM . LPAREN parameter_list RPAREN function_body
+    (9) function -> TYPE var seen_FM . LPAREN RPAREN function_body
+    (13) function_prototype -> TYPE var seen_FM . LPAREN parameter_list RPAREN SEMICOLON
+    (14) function_prototype -> TYPE var seen_FM . LPAREN RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 28
+
+
+state 22
+
+    (78) declaration -> TYPE varlist SEMICOLON .
+
+    IF              reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    WHILE           reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    NAME            reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    STAR            reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    INT             reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    FLOAT           reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    RCURLY          reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    RETURN          reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    VOID            reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    $end            reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+    ELSE            reduce using rule 78 (declaration -> TYPE varlist SEMICOLON .)
+
+
+state 23
+
+    (81) var -> STAR var .
+
+    COMMA           reduce using rule 81 (var -> STAR var .)
+    LPAREN          reduce using rule 81 (var -> STAR var .)
+    SEMICOLON       reduce using rule 81 (var -> STAR var .)
+    RPAREN          reduce using rule 81 (var -> STAR var .)
+
+
+state 24
+
+    (11) function -> VOID MAIN seen_FM LPAREN . RPAREN body
+
+    RPAREN          shift and go to state 29
+
+
+state 25
+
+    (8) function -> VOID NAME seen_FM LPAREN . parameter_list RPAREN function_body
+    (10) function -> VOID NAME seen_FM LPAREN . RPAREN function_body
+    (15) function_prototype -> VOID NAME seen_FM LPAREN . parameter_list RPAREN SEMICOLON
+    (16) function_prototype -> VOID NAME seen_FM LPAREN . RPAREN SEMICOLON
+    (17) parameter_list -> . TYPE var COMMA parameter_list
+    (18) parameter_list -> . TYPE var
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    RPAREN          shift and go to state 30
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    parameter_list                 shift and go to state 31
+    TYPE                           shift and go to state 32
+
+state 26
+
+    (79) varlist -> var . COMMA varlist
+    (80) varlist -> var .
+
+    COMMA           shift and go to state 20
+    SEMICOLON       reduce using rule 80 (varlist -> var .)
+
+
+state 27
+
+    (79) varlist -> var COMMA varlist .
+
+    SEMICOLON       reduce using rule 79 (varlist -> var COMMA varlist .)
+
+
+state 28
+
+    (7) function -> TYPE var seen_FM LPAREN . parameter_list RPAREN function_body
+    (9) function -> TYPE var seen_FM LPAREN . RPAREN function_body
+    (13) function_prototype -> TYPE var seen_FM LPAREN . parameter_list RPAREN SEMICOLON
+    (14) function_prototype -> TYPE var seen_FM LPAREN . RPAREN SEMICOLON
+    (17) parameter_list -> . TYPE var COMMA parameter_list
+    (18) parameter_list -> . TYPE var
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    RPAREN          shift and go to state 34
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    parameter_list                 shift and go to state 33
+    TYPE                           shift and go to state 32
+
+state 29
+
+    (11) function -> VOID MAIN seen_FM LPAREN RPAREN . body
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+
+    LCURLY          shift and go to state 35
+
+    body                           shift and go to state 36
+
+state 30
+
+    (10) function -> VOID NAME seen_FM LPAREN RPAREN . function_body
+    (16) function_prototype -> VOID NAME seen_FM LPAREN RPAREN . SEMICOLON
+    (21) function_body -> . LCURLY stmt_list return_stmt RCURLY
+    (22) function_body -> . body
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+
+    SEMICOLON       shift and go to state 38
+    LCURLY          shift and go to state 37
+
+    body                           shift and go to state 39
+    function_body                  shift and go to state 40
+
+state 31
+
+    (8) function -> VOID NAME seen_FM LPAREN parameter_list . RPAREN function_body
+    (15) function_prototype -> VOID NAME seen_FM LPAREN parameter_list . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 41
+
+
+state 32
+
+    (17) parameter_list -> TYPE . var COMMA parameter_list
+    (18) parameter_list -> TYPE . var
+    (81) var -> . STAR var
+    (82) var -> . NAME
+
+    STAR            shift and go to state 17
+    NAME            shift and go to state 15
+
+    var                            shift and go to state 42
+
+state 33
+
+    (7) function -> TYPE var seen_FM LPAREN parameter_list . RPAREN function_body
+    (13) function_prototype -> TYPE var seen_FM LPAREN parameter_list . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 43
+
+
+state 34
+
+    (9) function -> TYPE var seen_FM LPAREN RPAREN . function_body
+    (14) function_prototype -> TYPE var seen_FM LPAREN RPAREN . SEMICOLON
+    (21) function_body -> . LCURLY stmt_list return_stmt RCURLY
+    (22) function_body -> . body
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+
+    SEMICOLON       shift and go to state 44
+    LCURLY          shift and go to state 37
+
+    body                           shift and go to state 39
+    function_body                  shift and go to state 45
+
+state 35
+
+    (25) body -> LCURLY . stmt_list RCURLY
+    (26) body -> LCURLY . RCURLY
+    (27) stmt_list -> . stmt stmt_list
+    (28) stmt_list -> . stmt
+    (29) stmt -> . matched_stmt
+    (30) stmt -> . unmatched_stmt
+    (31) matched_stmt -> . assign
+    (32) matched_stmt -> . declaration
+    (33) matched_stmt -> . matched_decision
+    (34) matched_stmt -> . matched_loop
+    (35) unmatched_stmt -> . unmatched_decision
+    (36) unmatched_stmt -> . unmatched_loop
+    (37) assign -> . L1 EQUALS R1 SEMICOLON
+    (38) assign -> . L2 EQUALS R2 SEMICOLON
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (97) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> . IF LPAREN condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> . IF LPAREN condition RPAREN body ELSE body
+    (101) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> . IF LPAREN condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+    (83) matched_loop -> . WHILE LPAREN condition RPAREN matched_stmt
+    (84) matched_loop -> . WHILE LPAREN condition RPAREN body
+    (85) matched_loop -> . WHILE LPAREN condition RPAREN SEMICOLON
+    (106) unmatched_decision -> . IF LPAREN condition RPAREN stmt
+    (107) unmatched_decision -> . IF LPAREN condition RPAREN body
+    (108) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON
+    (109) unmatched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> . IF LPAREN condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+    (86) unmatched_loop -> . WHILE LPAREN condition RPAREN unmatched_stmt
+    (39) L1 -> . NAME
+    (59) L2 -> . STAR L2
+    (60) L2 -> . STAR NAME
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    RCURLY          shift and go to state 52
+    IF              shift and go to state 55
+    WHILE           shift and go to state 47
+    NAME            shift and go to state 57
+    STAR            shift and go to state 59
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    L2                             shift and go to state 46
+    declaration                    shift and go to state 48
+    unmatched_loop                 shift and go to state 49
+    matched_loop                   shift and go to state 50
+    TYPE                           shift and go to state 54
+    L1                             shift and go to state 58
+    unmatched_decision             shift and go to state 51
+    stmt                           shift and go to state 60
+    matched_stmt                   shift and go to state 61
+    matched_decision               shift and go to state 53
+    assign                         shift and go to state 62
+    unmatched_stmt                 shift and go to state 56
+    stmt_list                      shift and go to state 63
+
+state 36
+
+    (11) function -> VOID MAIN seen_FM LPAREN RPAREN body .
+
+    VOID            reduce using rule 11 (function -> VOID MAIN seen_FM LPAREN RPAREN body .)
+    INT             reduce using rule 11 (function -> VOID MAIN seen_FM LPAREN RPAREN body .)
+    FLOAT           reduce using rule 11 (function -> VOID MAIN seen_FM LPAREN RPAREN body .)
+    $end            reduce using rule 11 (function -> VOID MAIN seen_FM LPAREN RPAREN body .)
+
+
+state 37
+
+    (21) function_body -> LCURLY . stmt_list return_stmt RCURLY
+    (25) body -> LCURLY . stmt_list RCURLY
+    (26) body -> LCURLY . RCURLY
+    (27) stmt_list -> . stmt stmt_list
+    (28) stmt_list -> . stmt
+    (29) stmt -> . matched_stmt
+    (30) stmt -> . unmatched_stmt
+    (31) matched_stmt -> . assign
+    (32) matched_stmt -> . declaration
+    (33) matched_stmt -> . matched_decision
+    (34) matched_stmt -> . matched_loop
+    (35) unmatched_stmt -> . unmatched_decision
+    (36) unmatched_stmt -> . unmatched_loop
+    (37) assign -> . L1 EQUALS R1 SEMICOLON
+    (38) assign -> . L2 EQUALS R2 SEMICOLON
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (97) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> . IF LPAREN condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> . IF LPAREN condition RPAREN body ELSE body
+    (101) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> . IF LPAREN condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+    (83) matched_loop -> . WHILE LPAREN condition RPAREN matched_stmt
+    (84) matched_loop -> . WHILE LPAREN condition RPAREN body
+    (85) matched_loop -> . WHILE LPAREN condition RPAREN SEMICOLON
+    (106) unmatched_decision -> . IF LPAREN condition RPAREN stmt
+    (107) unmatched_decision -> . IF LPAREN condition RPAREN body
+    (108) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON
+    (109) unmatched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> . IF LPAREN condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+    (86) unmatched_loop -> . WHILE LPAREN condition RPAREN unmatched_stmt
+    (39) L1 -> . NAME
+    (59) L2 -> . STAR L2
+    (60) L2 -> . STAR NAME
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    RCURLY          shift and go to state 52
+    IF              shift and go to state 55
+    WHILE           shift and go to state 47
+    NAME            shift and go to state 57
+    STAR            shift and go to state 59
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    L2                             shift and go to state 46
+    declaration                    shift and go to state 48
+    unmatched_loop                 shift and go to state 49
+    matched_loop                   shift and go to state 50
+    TYPE                           shift and go to state 54
+    L1                             shift and go to state 58
+    unmatched_decision             shift and go to state 51
+    stmt                           shift and go to state 60
+    matched_stmt                   shift and go to state 61
+    matched_decision               shift and go to state 53
+    assign                         shift and go to state 62
+    unmatched_stmt                 shift and go to state 56
+    stmt_list                      shift and go to state 64
+
+state 38
+
+    (16) function_prototype -> VOID NAME seen_FM LPAREN RPAREN SEMICOLON .
+
+    VOID            reduce using rule 16 (function_prototype -> VOID NAME seen_FM LPAREN RPAREN SEMICOLON .)
+    INT             reduce using rule 16 (function_prototype -> VOID NAME seen_FM LPAREN RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 16 (function_prototype -> VOID NAME seen_FM LPAREN RPAREN SEMICOLON .)
+    $end            reduce using rule 16 (function_prototype -> VOID NAME seen_FM LPAREN RPAREN SEMICOLON .)
+
+
+state 39
+
+    (22) function_body -> body .
+
+    VOID            reduce using rule 22 (function_body -> body .)
+    INT             reduce using rule 22 (function_body -> body .)
+    FLOAT           reduce using rule 22 (function_body -> body .)
+    $end            reduce using rule 22 (function_body -> body .)
+
+
+state 40
+
+    (10) function -> VOID NAME seen_FM LPAREN RPAREN function_body .
+
+    VOID            reduce using rule 10 (function -> VOID NAME seen_FM LPAREN RPAREN function_body .)
+    INT             reduce using rule 10 (function -> VOID NAME seen_FM LPAREN RPAREN function_body .)
+    FLOAT           reduce using rule 10 (function -> VOID NAME seen_FM LPAREN RPAREN function_body .)
+    $end            reduce using rule 10 (function -> VOID NAME seen_FM LPAREN RPAREN function_body .)
+
+
+state 41
+
+    (8) function -> VOID NAME seen_FM LPAREN parameter_list RPAREN . function_body
+    (15) function_prototype -> VOID NAME seen_FM LPAREN parameter_list RPAREN . SEMICOLON
+    (21) function_body -> . LCURLY stmt_list return_stmt RCURLY
+    (22) function_body -> . body
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+
+    SEMICOLON       shift and go to state 66
+    LCURLY          shift and go to state 37
+
+    body                           shift and go to state 39
+    function_body                  shift and go to state 65
+
+state 42
+
+    (17) parameter_list -> TYPE var . COMMA parameter_list
+    (18) parameter_list -> TYPE var .
+
+    COMMA           shift and go to state 67
+    RPAREN          reduce using rule 18 (parameter_list -> TYPE var .)
+
+
+state 43
+
+    (7) function -> TYPE var seen_FM LPAREN parameter_list RPAREN . function_body
+    (13) function_prototype -> TYPE var seen_FM LPAREN parameter_list RPAREN . SEMICOLON
+    (21) function_body -> . LCURLY stmt_list return_stmt RCURLY
+    (22) function_body -> . body
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+
+    SEMICOLON       shift and go to state 69
+    LCURLY          shift and go to state 37
+
+    body                           shift and go to state 39
+    function_body                  shift and go to state 68
+
+state 44
+
+    (14) function_prototype -> TYPE var seen_FM LPAREN RPAREN SEMICOLON .
+
+    VOID            reduce using rule 14 (function_prototype -> TYPE var seen_FM LPAREN RPAREN SEMICOLON .)
+    INT             reduce using rule 14 (function_prototype -> TYPE var seen_FM LPAREN RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 14 (function_prototype -> TYPE var seen_FM LPAREN RPAREN SEMICOLON .)
+    $end            reduce using rule 14 (function_prototype -> TYPE var seen_FM LPAREN RPAREN SEMICOLON .)
+
+
+state 45
+
+    (9) function -> TYPE var seen_FM LPAREN RPAREN function_body .
+
+    VOID            reduce using rule 9 (function -> TYPE var seen_FM LPAREN RPAREN function_body .)
+    INT             reduce using rule 9 (function -> TYPE var seen_FM LPAREN RPAREN function_body .)
+    FLOAT           reduce using rule 9 (function -> TYPE var seen_FM LPAREN RPAREN function_body .)
+    $end            reduce using rule 9 (function -> TYPE var seen_FM LPAREN RPAREN function_body .)
+
+
+state 46
+
+    (38) assign -> L2 . EQUALS R2 SEMICOLON
+
+    EQUALS          shift and go to state 70
+
+
+state 47
+
+    (83) matched_loop -> WHILE . LPAREN condition RPAREN matched_stmt
+    (84) matched_loop -> WHILE . LPAREN condition RPAREN body
+    (85) matched_loop -> WHILE . LPAREN condition RPAREN SEMICOLON
+    (86) unmatched_loop -> WHILE . LPAREN condition RPAREN unmatched_stmt
+
+    LPAREN          shift and go to state 71
+
+
+state 48
+
+    (32) matched_stmt -> declaration .
+
+    IF              reduce using rule 32 (matched_stmt -> declaration .)
+    WHILE           reduce using rule 32 (matched_stmt -> declaration .)
+    NAME            reduce using rule 32 (matched_stmt -> declaration .)
+    STAR            reduce using rule 32 (matched_stmt -> declaration .)
+    INT             reduce using rule 32 (matched_stmt -> declaration .)
+    FLOAT           reduce using rule 32 (matched_stmt -> declaration .)
+    RCURLY          reduce using rule 32 (matched_stmt -> declaration .)
+    RETURN          reduce using rule 32 (matched_stmt -> declaration .)
+    ELSE            reduce using rule 32 (matched_stmt -> declaration .)
+
+
+state 49
+
+    (36) unmatched_stmt -> unmatched_loop .
+
+    IF              reduce using rule 36 (unmatched_stmt -> unmatched_loop .)
+    WHILE           reduce using rule 36 (unmatched_stmt -> unmatched_loop .)
+    NAME            reduce using rule 36 (unmatched_stmt -> unmatched_loop .)
+    STAR            reduce using rule 36 (unmatched_stmt -> unmatched_loop .)
+    INT             reduce using rule 36 (unmatched_stmt -> unmatched_loop .)
+    FLOAT           reduce using rule 36 (unmatched_stmt -> unmatched_loop .)
+    RCURLY          reduce using rule 36 (unmatched_stmt -> unmatched_loop .)
+    RETURN          reduce using rule 36 (unmatched_stmt -> unmatched_loop .)
+
+
+state 50
+
+    (34) matched_stmt -> matched_loop .
+
+    IF              reduce using rule 34 (matched_stmt -> matched_loop .)
+    WHILE           reduce using rule 34 (matched_stmt -> matched_loop .)
+    NAME            reduce using rule 34 (matched_stmt -> matched_loop .)
+    STAR            reduce using rule 34 (matched_stmt -> matched_loop .)
+    INT             reduce using rule 34 (matched_stmt -> matched_loop .)
+    FLOAT           reduce using rule 34 (matched_stmt -> matched_loop .)
+    RCURLY          reduce using rule 34 (matched_stmt -> matched_loop .)
+    RETURN          reduce using rule 34 (matched_stmt -> matched_loop .)
+    ELSE            reduce using rule 34 (matched_stmt -> matched_loop .)
+
+
+state 51
+
+    (35) unmatched_stmt -> unmatched_decision .
+
+    IF              reduce using rule 35 (unmatched_stmt -> unmatched_decision .)
+    WHILE           reduce using rule 35 (unmatched_stmt -> unmatched_decision .)
+    NAME            reduce using rule 35 (unmatched_stmt -> unmatched_decision .)
+    STAR            reduce using rule 35 (unmatched_stmt -> unmatched_decision .)
+    INT             reduce using rule 35 (unmatched_stmt -> unmatched_decision .)
+    FLOAT           reduce using rule 35 (unmatched_stmt -> unmatched_decision .)
+    RCURLY          reduce using rule 35 (unmatched_stmt -> unmatched_decision .)
+    RETURN          reduce using rule 35 (unmatched_stmt -> unmatched_decision .)
+
+
+state 52
+
+    (26) body -> LCURLY RCURLY .
+
+    VOID            reduce using rule 26 (body -> LCURLY RCURLY .)
+    INT             reduce using rule 26 (body -> LCURLY RCURLY .)
+    FLOAT           reduce using rule 26 (body -> LCURLY RCURLY .)
+    $end            reduce using rule 26 (body -> LCURLY RCURLY .)
+    IF              reduce using rule 26 (body -> LCURLY RCURLY .)
+    WHILE           reduce using rule 26 (body -> LCURLY RCURLY .)
+    NAME            reduce using rule 26 (body -> LCURLY RCURLY .)
+    STAR            reduce using rule 26 (body -> LCURLY RCURLY .)
+    RCURLY          reduce using rule 26 (body -> LCURLY RCURLY .)
+    RETURN          reduce using rule 26 (body -> LCURLY RCURLY .)
+    ELSE            reduce using rule 26 (body -> LCURLY RCURLY .)
+
+
+state 53
+
+    (33) matched_stmt -> matched_decision .
+
+    IF              reduce using rule 33 (matched_stmt -> matched_decision .)
+    WHILE           reduce using rule 33 (matched_stmt -> matched_decision .)
+    NAME            reduce using rule 33 (matched_stmt -> matched_decision .)
+    STAR            reduce using rule 33 (matched_stmt -> matched_decision .)
+    INT             reduce using rule 33 (matched_stmt -> matched_decision .)
+    FLOAT           reduce using rule 33 (matched_stmt -> matched_decision .)
+    RCURLY          reduce using rule 33 (matched_stmt -> matched_decision .)
+    RETURN          reduce using rule 33 (matched_stmt -> matched_decision .)
+    ELSE            reduce using rule 33 (matched_stmt -> matched_decision .)
+
+
+state 54
+
+    (78) declaration -> TYPE . varlist SEMICOLON
+    (79) varlist -> . var COMMA varlist
+    (80) varlist -> . var
+    (81) var -> . STAR var
+    (82) var -> . NAME
+
+    STAR            shift and go to state 17
+    NAME            shift and go to state 15
+
+    var                            shift and go to state 26
+    varlist                        shift and go to state 16
+
+state 55
+
+    (97) matched_decision -> IF . LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> IF . LPAREN condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> IF . LPAREN condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> IF . LPAREN condition RPAREN body ELSE body
+    (101) matched_decision -> IF . LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> IF . LPAREN condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> IF . LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> IF . LPAREN condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> IF . LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+    (106) unmatched_decision -> IF . LPAREN condition RPAREN stmt
+    (107) unmatched_decision -> IF . LPAREN condition RPAREN body
+    (108) unmatched_decision -> IF . LPAREN condition RPAREN SEMICOLON
+    (109) unmatched_decision -> IF . LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> IF . LPAREN condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> IF . LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+
+    LPAREN          shift and go to state 72
+
+
+state 56
+
+    (30) stmt -> unmatched_stmt .
+
+    IF              reduce using rule 30 (stmt -> unmatched_stmt .)
+    WHILE           reduce using rule 30 (stmt -> unmatched_stmt .)
+    NAME            reduce using rule 30 (stmt -> unmatched_stmt .)
+    STAR            reduce using rule 30 (stmt -> unmatched_stmt .)
+    INT             reduce using rule 30 (stmt -> unmatched_stmt .)
+    FLOAT           reduce using rule 30 (stmt -> unmatched_stmt .)
+    RCURLY          reduce using rule 30 (stmt -> unmatched_stmt .)
+    RETURN          reduce using rule 30 (stmt -> unmatched_stmt .)
+
+
+state 57
+
+    (39) L1 -> NAME .
+
+    EQUALS          reduce using rule 39 (L1 -> NAME .)
+
+
+state 58
+
+    (37) assign -> L1 . EQUALS R1 SEMICOLON
+
+    EQUALS          shift and go to state 73
+
+
+state 59
+
+    (59) L2 -> STAR . L2
+    (60) L2 -> STAR . NAME
+    (59) L2 -> . STAR L2
+    (60) L2 -> . STAR NAME
+
+    NAME            shift and go to state 75
+    STAR            shift and go to state 59
+
+    L2                             shift and go to state 74
+
+state 60
+
+    (27) stmt_list -> stmt . stmt_list
+    (28) stmt_list -> stmt .
+    (27) stmt_list -> . stmt stmt_list
+    (28) stmt_list -> . stmt
+    (29) stmt -> . matched_stmt
+    (30) stmt -> . unmatched_stmt
+    (31) matched_stmt -> . assign
+    (32) matched_stmt -> . declaration
+    (33) matched_stmt -> . matched_decision
+    (34) matched_stmt -> . matched_loop
+    (35) unmatched_stmt -> . unmatched_decision
+    (36) unmatched_stmt -> . unmatched_loop
+    (37) assign -> . L1 EQUALS R1 SEMICOLON
+    (38) assign -> . L2 EQUALS R2 SEMICOLON
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (97) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> . IF LPAREN condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> . IF LPAREN condition RPAREN body ELSE body
+    (101) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> . IF LPAREN condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+    (83) matched_loop -> . WHILE LPAREN condition RPAREN matched_stmt
+    (84) matched_loop -> . WHILE LPAREN condition RPAREN body
+    (85) matched_loop -> . WHILE LPAREN condition RPAREN SEMICOLON
+    (106) unmatched_decision -> . IF LPAREN condition RPAREN stmt
+    (107) unmatched_decision -> . IF LPAREN condition RPAREN body
+    (108) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON
+    (109) unmatched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> . IF LPAREN condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+    (86) unmatched_loop -> . WHILE LPAREN condition RPAREN unmatched_stmt
+    (39) L1 -> . NAME
+    (59) L2 -> . STAR L2
+    (60) L2 -> . STAR NAME
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    RCURLY          reduce using rule 28 (stmt_list -> stmt .)
+    RETURN          reduce using rule 28 (stmt_list -> stmt .)
+    IF              shift and go to state 55
+    WHILE           shift and go to state 47
+    NAME            shift and go to state 57
+    STAR            shift and go to state 59
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    L2                             shift and go to state 46
+    declaration                    shift and go to state 48
+    unmatched_loop                 shift and go to state 49
+    matched_loop                   shift and go to state 50
+    TYPE                           shift and go to state 54
+    L1                             shift and go to state 58
+    unmatched_decision             shift and go to state 51
+    stmt                           shift and go to state 60
+    matched_stmt                   shift and go to state 61
+    matched_decision               shift and go to state 53
+    assign                         shift and go to state 62
+    unmatched_stmt                 shift and go to state 56
+    stmt_list                      shift and go to state 76
+
+state 61
+
+    (29) stmt -> matched_stmt .
+
+    IF              reduce using rule 29 (stmt -> matched_stmt .)
+    WHILE           reduce using rule 29 (stmt -> matched_stmt .)
+    NAME            reduce using rule 29 (stmt -> matched_stmt .)
+    STAR            reduce using rule 29 (stmt -> matched_stmt .)
+    INT             reduce using rule 29 (stmt -> matched_stmt .)
+    FLOAT           reduce using rule 29 (stmt -> matched_stmt .)
+    RCURLY          reduce using rule 29 (stmt -> matched_stmt .)
+    RETURN          reduce using rule 29 (stmt -> matched_stmt .)
+
+
+state 62
+
+    (31) matched_stmt -> assign .
+
+    IF              reduce using rule 31 (matched_stmt -> assign .)
+    WHILE           reduce using rule 31 (matched_stmt -> assign .)
+    NAME            reduce using rule 31 (matched_stmt -> assign .)
+    STAR            reduce using rule 31 (matched_stmt -> assign .)
+    INT             reduce using rule 31 (matched_stmt -> assign .)
+    FLOAT           reduce using rule 31 (matched_stmt -> assign .)
+    RCURLY          reduce using rule 31 (matched_stmt -> assign .)
+    RETURN          reduce using rule 31 (matched_stmt -> assign .)
+    ELSE            reduce using rule 31 (matched_stmt -> assign .)
+
+
+state 63
+
+    (25) body -> LCURLY stmt_list . RCURLY
+
+    RCURLY          shift and go to state 77
+
+
+state 64
+
+    (21) function_body -> LCURLY stmt_list . return_stmt RCURLY
+    (25) body -> LCURLY stmt_list . RCURLY
+    (23) return_stmt -> . RETURN SEMICOLON
+    (24) return_stmt -> . RETURN R2 SEMICOLON
+
+    RCURLY          shift and go to state 77
+    RETURN          shift and go to state 78
+
+    return_stmt                    shift and go to state 79
+
+state 65
+
+    (8) function -> VOID NAME seen_FM LPAREN parameter_list RPAREN function_body .
+
+    VOID            reduce using rule 8 (function -> VOID NAME seen_FM LPAREN parameter_list RPAREN function_body .)
+    INT             reduce using rule 8 (function -> VOID NAME seen_FM LPAREN parameter_list RPAREN function_body .)
+    FLOAT           reduce using rule 8 (function -> VOID NAME seen_FM LPAREN parameter_list RPAREN function_body .)
+    $end            reduce using rule 8 (function -> VOID NAME seen_FM LPAREN parameter_list RPAREN function_body .)
+
+
+state 66
+
+    (15) function_prototype -> VOID NAME seen_FM LPAREN parameter_list RPAREN SEMICOLON .
+
+    VOID            reduce using rule 15 (function_prototype -> VOID NAME seen_FM LPAREN parameter_list RPAREN SEMICOLON .)
+    INT             reduce using rule 15 (function_prototype -> VOID NAME seen_FM LPAREN parameter_list RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 15 (function_prototype -> VOID NAME seen_FM LPAREN parameter_list RPAREN SEMICOLON .)
+    $end            reduce using rule 15 (function_prototype -> VOID NAME seen_FM LPAREN parameter_list RPAREN SEMICOLON .)
+
+
+state 67
+
+    (17) parameter_list -> TYPE var COMMA . parameter_list
+    (17) parameter_list -> . TYPE var COMMA parameter_list
+    (18) parameter_list -> . TYPE var
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    parameter_list                 shift and go to state 80
+    TYPE                           shift and go to state 32
+
+state 68
+
+    (7) function -> TYPE var seen_FM LPAREN parameter_list RPAREN function_body .
+
+    VOID            reduce using rule 7 (function -> TYPE var seen_FM LPAREN parameter_list RPAREN function_body .)
+    INT             reduce using rule 7 (function -> TYPE var seen_FM LPAREN parameter_list RPAREN function_body .)
+    FLOAT           reduce using rule 7 (function -> TYPE var seen_FM LPAREN parameter_list RPAREN function_body .)
+    $end            reduce using rule 7 (function -> TYPE var seen_FM LPAREN parameter_list RPAREN function_body .)
+
+
+state 69
+
+    (13) function_prototype -> TYPE var seen_FM LPAREN parameter_list RPAREN SEMICOLON .
+
+    VOID            reduce using rule 13 (function_prototype -> TYPE var seen_FM LPAREN parameter_list RPAREN SEMICOLON .)
+    INT             reduce using rule 13 (function_prototype -> TYPE var seen_FM LPAREN parameter_list RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 13 (function_prototype -> TYPE var seen_FM LPAREN parameter_list RPAREN SEMICOLON .)
+    $end            reduce using rule 13 (function_prototype -> TYPE var seen_FM LPAREN parameter_list RPAREN SEMICOLON .)
+
+
+state 70
+
+    (38) assign -> L2 EQUALS . R2 SEMICOLON
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 87
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 71
+
+    (83) matched_loop -> WHILE LPAREN . condition RPAREN matched_stmt
+    (84) matched_loop -> WHILE LPAREN . condition RPAREN body
+    (85) matched_loop -> WHILE LPAREN . condition RPAREN SEMICOLON
+    (86) unmatched_loop -> WHILE LPAREN . condition RPAREN unmatched_stmt
+    (87) condition -> . condition AND condition
+    (88) condition -> . condition OR condition
+    (89) condition -> . LPAREN condition RPAREN
+    (90) condition -> . NOT condition
+    (91) condition -> . R2 GT R2
+    (92) condition -> . R2 LT R2
+    (93) condition -> . R2 GE R2
+    (94) condition -> . R2 LE R2
+    (95) condition -> . R2 EQ R2
+    (96) condition -> . R2 NE R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 91
+    NOT             shift and go to state 92
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    condition                      shift and go to state 90
+    PName                          shift and go to state 82
+    R2                             shift and go to state 93
+    function_call                  shift and go to state 89
+
+state 72
+
+    (97) matched_decision -> IF LPAREN . condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> IF LPAREN . condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> IF LPAREN . condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> IF LPAREN . condition RPAREN body ELSE body
+    (101) matched_decision -> IF LPAREN . condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> IF LPAREN . condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> IF LPAREN . condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> IF LPAREN . condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> IF LPAREN . condition RPAREN SEMICOLON ELSE SEMICOLON
+    (106) unmatched_decision -> IF LPAREN . condition RPAREN stmt
+    (107) unmatched_decision -> IF LPAREN . condition RPAREN body
+    (108) unmatched_decision -> IF LPAREN . condition RPAREN SEMICOLON
+    (109) unmatched_decision -> IF LPAREN . condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> IF LPAREN . condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> IF LPAREN . condition RPAREN SEMICOLON ELSE unmatched_stmt
+    (87) condition -> . condition AND condition
+    (88) condition -> . condition OR condition
+    (89) condition -> . LPAREN condition RPAREN
+    (90) condition -> . NOT condition
+    (91) condition -> . R2 GT R2
+    (92) condition -> . R2 LT R2
+    (93) condition -> . R2 GE R2
+    (94) condition -> . R2 LE R2
+    (95) condition -> . R2 EQ R2
+    (96) condition -> . R2 NE R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 91
+    NOT             shift and go to state 92
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    condition                      shift and go to state 94
+    PName                          shift and go to state 82
+    R2                             shift and go to state 93
+    function_call                  shift and go to state 89
+
+state 73
+
+    (37) assign -> L1 EQUALS . R1 SEMICOLON
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 100
+    MINUS           shift and go to state 101
+    NAME            shift and go to state 96
+    NUMBER          shift and go to state 97
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    PName                          shift and go to state 95
+    R1                             shift and go to state 99
+    ALLNUM                         shift and go to state 98
+    function_call                  shift and go to state 102
+
+state 74
+
+    (59) L2 -> STAR L2 .
+
+    EQUALS          reduce using rule 59 (L2 -> STAR L2 .)
+
+
+state 75
+
+    (60) L2 -> STAR NAME .
+
+    EQUALS          reduce using rule 60 (L2 -> STAR NAME .)
+
+
+state 76
+
+    (27) stmt_list -> stmt stmt_list .
+
+    RCURLY          reduce using rule 27 (stmt_list -> stmt stmt_list .)
+    RETURN          reduce using rule 27 (stmt_list -> stmt stmt_list .)
+
+
+state 77
+
+    (25) body -> LCURLY stmt_list RCURLY .
+
+    VOID            reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    INT             reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    FLOAT           reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    $end            reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    IF              reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    WHILE           reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    NAME            reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    STAR            reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    RCURLY          reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    RETURN          reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+    ELSE            reduce using rule 25 (body -> LCURLY stmt_list RCURLY .)
+
+
+state 78
+
+    (23) return_stmt -> RETURN . SEMICOLON
+    (24) return_stmt -> RETURN . R2 SEMICOLON
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    SEMICOLON       shift and go to state 103
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 104
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 79
+
+    (21) function_body -> LCURLY stmt_list return_stmt . RCURLY
+
+    RCURLY          shift and go to state 105
+
+
+state 80
+
+    (17) parameter_list -> TYPE var COMMA parameter_list .
+
+    RPAREN          reduce using rule 17 (parameter_list -> TYPE var COMMA parameter_list .)
+
+
+state 81
+
+    (73) PName -> AMPERSAND . NAME
+
+    NAME            shift and go to state 106
+
+
+state 82
+
+    (67) R2 -> PName .
+
+    GT              reduce using rule 67 (R2 -> PName .)
+    LT              reduce using rule 67 (R2 -> PName .)
+    GE              reduce using rule 67 (R2 -> PName .)
+    LE              reduce using rule 67 (R2 -> PName .)
+    EQ              reduce using rule 67 (R2 -> PName .)
+    NE              reduce using rule 67 (R2 -> PName .)
+    PLUS            reduce using rule 67 (R2 -> PName .)
+    MINUS           reduce using rule 67 (R2 -> PName .)
+    STAR            reduce using rule 67 (R2 -> PName .)
+    DIVIDE          reduce using rule 67 (R2 -> PName .)
+    RPAREN          reduce using rule 67 (R2 -> PName .)
+    AND             reduce using rule 67 (R2 -> PName .)
+    OR              reduce using rule 67 (R2 -> PName .)
+    SEMICOLON       reduce using rule 67 (R2 -> PName .)
+    COMMA           reduce using rule 67 (R2 -> PName .)
+
+
+state 83
+
+    (69) R2 -> NAME .
+    (74) function_call -> NAME . LPAREN arg_list RPAREN
+    (75) function_call -> NAME . LPAREN RPAREN
+
+    GT              reduce using rule 69 (R2 -> NAME .)
+    LT              reduce using rule 69 (R2 -> NAME .)
+    GE              reduce using rule 69 (R2 -> NAME .)
+    LE              reduce using rule 69 (R2 -> NAME .)
+    EQ              reduce using rule 69 (R2 -> NAME .)
+    NE              reduce using rule 69 (R2 -> NAME .)
+    PLUS            reduce using rule 69 (R2 -> NAME .)
+    MINUS           reduce using rule 69 (R2 -> NAME .)
+    STAR            reduce using rule 69 (R2 -> NAME .)
+    DIVIDE          reduce using rule 69 (R2 -> NAME .)
+    RPAREN          reduce using rule 69 (R2 -> NAME .)
+    AND             reduce using rule 69 (R2 -> NAME .)
+    OR              reduce using rule 69 (R2 -> NAME .)
+    SEMICOLON       reduce using rule 69 (R2 -> NAME .)
+    COMMA           reduce using rule 69 (R2 -> NAME .)
+    LPAREN          shift and go to state 107
+
+
+state 84
+
+    (70) R2 -> NUMBER .
+
+    GT              reduce using rule 70 (R2 -> NUMBER .)
+    LT              reduce using rule 70 (R2 -> NUMBER .)
+    GE              reduce using rule 70 (R2 -> NUMBER .)
+    LE              reduce using rule 70 (R2 -> NUMBER .)
+    EQ              reduce using rule 70 (R2 -> NUMBER .)
+    NE              reduce using rule 70 (R2 -> NUMBER .)
+    PLUS            reduce using rule 70 (R2 -> NUMBER .)
+    MINUS           reduce using rule 70 (R2 -> NUMBER .)
+    STAR            reduce using rule 70 (R2 -> NUMBER .)
+    DIVIDE          reduce using rule 70 (R2 -> NUMBER .)
+    RPAREN          reduce using rule 70 (R2 -> NUMBER .)
+    AND             reduce using rule 70 (R2 -> NUMBER .)
+    OR              reduce using rule 70 (R2 -> NUMBER .)
+    SEMICOLON       reduce using rule 70 (R2 -> NUMBER .)
+    COMMA           reduce using rule 70 (R2 -> NUMBER .)
+
+
+state 85
+
+    (71) PName -> STAR . PName
+    (72) PName -> STAR . NAME
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+
+    NAME            shift and go to state 108
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    PName                          shift and go to state 109
+
+state 86
+
+    (65) R2 -> LPAREN . R2 RPAREN
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 110
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 87
+
+    (38) assign -> L2 EQUALS R2 . SEMICOLON
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    SEMICOLON       shift and go to state 115
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 88
+
+    (66) R2 -> MINUS . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 116
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 89
+
+    (68) R2 -> function_call .
+
+    GT              reduce using rule 68 (R2 -> function_call .)
+    LT              reduce using rule 68 (R2 -> function_call .)
+    GE              reduce using rule 68 (R2 -> function_call .)
+    LE              reduce using rule 68 (R2 -> function_call .)
+    EQ              reduce using rule 68 (R2 -> function_call .)
+    NE              reduce using rule 68 (R2 -> function_call .)
+    PLUS            reduce using rule 68 (R2 -> function_call .)
+    MINUS           reduce using rule 68 (R2 -> function_call .)
+    STAR            reduce using rule 68 (R2 -> function_call .)
+    DIVIDE          reduce using rule 68 (R2 -> function_call .)
+    RPAREN          reduce using rule 68 (R2 -> function_call .)
+    AND             reduce using rule 68 (R2 -> function_call .)
+    OR              reduce using rule 68 (R2 -> function_call .)
+    SEMICOLON       reduce using rule 68 (R2 -> function_call .)
+    COMMA           reduce using rule 68 (R2 -> function_call .)
+
+
+state 90
+
+    (83) matched_loop -> WHILE LPAREN condition . RPAREN matched_stmt
+    (84) matched_loop -> WHILE LPAREN condition . RPAREN body
+    (85) matched_loop -> WHILE LPAREN condition . RPAREN SEMICOLON
+    (86) unmatched_loop -> WHILE LPAREN condition . RPAREN unmatched_stmt
+    (87) condition -> condition . AND condition
+    (88) condition -> condition . OR condition
+
+    RPAREN          shift and go to state 118
+    AND             shift and go to state 117
+    OR              shift and go to state 119
+
+
+state 91
+
+    (89) condition -> LPAREN . condition RPAREN
+    (65) R2 -> LPAREN . R2 RPAREN
+    (87) condition -> . condition AND condition
+    (88) condition -> . condition OR condition
+    (89) condition -> . LPAREN condition RPAREN
+    (90) condition -> . NOT condition
+    (91) condition -> . R2 GT R2
+    (92) condition -> . R2 LT R2
+    (93) condition -> . R2 GE R2
+    (94) condition -> . R2 LE R2
+    (95) condition -> . R2 EQ R2
+    (96) condition -> . R2 NE R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 91
+    NOT             shift and go to state 92
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    condition                      shift and go to state 120
+    R2                             shift and go to state 121
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 92
+
+    (90) condition -> NOT . condition
+    (87) condition -> . condition AND condition
+    (88) condition -> . condition OR condition
+    (89) condition -> . LPAREN condition RPAREN
+    (90) condition -> . NOT condition
+    (91) condition -> . R2 GT R2
+    (92) condition -> . R2 LT R2
+    (93) condition -> . R2 GE R2
+    (94) condition -> . R2 LE R2
+    (95) condition -> . R2 EQ R2
+    (96) condition -> . R2 NE R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 91
+    NOT             shift and go to state 92
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    condition                      shift and go to state 122
+    R2                             shift and go to state 93
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 93
+
+    (91) condition -> R2 . GT R2
+    (92) condition -> R2 . LT R2
+    (93) condition -> R2 . GE R2
+    (94) condition -> R2 . LE R2
+    (95) condition -> R2 . EQ R2
+    (96) condition -> R2 . NE R2
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    GT              shift and go to state 126
+    LT              shift and go to state 128
+    GE              shift and go to state 123
+    LE              shift and go to state 127
+    EQ              shift and go to state 125
+    NE              shift and go to state 124
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 94
+
+    (97) matched_decision -> IF LPAREN condition . RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> IF LPAREN condition . RPAREN matched_stmt ELSE body
+    (99) matched_decision -> IF LPAREN condition . RPAREN body ELSE matched_stmt
+    (100) matched_decision -> IF LPAREN condition . RPAREN body ELSE body
+    (101) matched_decision -> IF LPAREN condition . RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> IF LPAREN condition . RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> IF LPAREN condition . RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> IF LPAREN condition . RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> IF LPAREN condition . RPAREN SEMICOLON ELSE SEMICOLON
+    (106) unmatched_decision -> IF LPAREN condition . RPAREN stmt
+    (107) unmatched_decision -> IF LPAREN condition . RPAREN body
+    (108) unmatched_decision -> IF LPAREN condition . RPAREN SEMICOLON
+    (109) unmatched_decision -> IF LPAREN condition . RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> IF LPAREN condition . RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> IF LPAREN condition . RPAREN SEMICOLON ELSE unmatched_stmt
+    (87) condition -> condition . AND condition
+    (88) condition -> condition . OR condition
+
+    RPAREN          shift and go to state 129
+    AND             shift and go to state 117
+    OR              shift and go to state 119
+
+
+state 95
+
+    (54) R1 -> PName .
+
+    PLUS            reduce using rule 54 (R1 -> PName .)
+    MINUS           reduce using rule 54 (R1 -> PName .)
+    STAR            reduce using rule 54 (R1 -> PName .)
+    DIVIDE          reduce using rule 54 (R1 -> PName .)
+    SEMICOLON       reduce using rule 54 (R1 -> PName .)
+    RPAREN          reduce using rule 54 (R1 -> PName .)
+
+
+state 96
+
+    (56) R1 -> NAME .
+    (74) function_call -> NAME . LPAREN arg_list RPAREN
+    (75) function_call -> NAME . LPAREN RPAREN
+
+    PLUS            reduce using rule 56 (R1 -> NAME .)
+    MINUS           reduce using rule 56 (R1 -> NAME .)
+    STAR            reduce using rule 56 (R1 -> NAME .)
+    DIVIDE          reduce using rule 56 (R1 -> NAME .)
+    SEMICOLON       reduce using rule 56 (R1 -> NAME .)
+    RPAREN          reduce using rule 56 (R1 -> NAME .)
+    LPAREN          shift and go to state 107
+
+
+state 97
+
+    (57) ALLNUM -> NUMBER .
+
+    PLUS            reduce using rule 57 (ALLNUM -> NUMBER .)
+    MINUS           reduce using rule 57 (ALLNUM -> NUMBER .)
+    STAR            reduce using rule 57 (ALLNUM -> NUMBER .)
+    DIVIDE          reduce using rule 57 (ALLNUM -> NUMBER .)
+    SEMICOLON       reduce using rule 57 (ALLNUM -> NUMBER .)
+    RPAREN          reduce using rule 57 (ALLNUM -> NUMBER .)
+
+
+state 98
+
+    (44) R1 -> ALLNUM . PLUS R1
+    (45) R1 -> ALLNUM . MINUS R1
+    (46) R1 -> ALLNUM . STAR R1
+    (47) R1 -> ALLNUM . DIVIDE R1
+
+    PLUS            shift and go to state 130
+    MINUS           shift and go to state 133
+    STAR            shift and go to state 131
+    DIVIDE          shift and go to state 132
+
+
+state 99
+
+    (37) assign -> L1 EQUALS R1 . SEMICOLON
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    SEMICOLON       shift and go to state 138
+    PLUS            shift and go to state 135
+    MINUS           shift and go to state 134
+    STAR            shift and go to state 136
+    DIVIDE          shift and go to state 137
+
+
+state 100
+
+    (52) R1 -> LPAREN . R1 RPAREN
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 100
+    MINUS           shift and go to state 101
+    NAME            shift and go to state 96
+    NUMBER          shift and go to state 97
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 139
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 98
+    function_call                  shift and go to state 102
+
+state 101
+
+    (53) R1 -> MINUS . R1
+    (58) ALLNUM -> MINUS . ALLNUM
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 100
+    MINUS           shift and go to state 101
+    NAME            shift and go to state 96
+    NUMBER          shift and go to state 97
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 141
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 140
+    function_call                  shift and go to state 102
+
+state 102
+
+    (55) R1 -> function_call .
+
+    PLUS            reduce using rule 55 (R1 -> function_call .)
+    MINUS           reduce using rule 55 (R1 -> function_call .)
+    STAR            reduce using rule 55 (R1 -> function_call .)
+    DIVIDE          reduce using rule 55 (R1 -> function_call .)
+    SEMICOLON       reduce using rule 55 (R1 -> function_call .)
+    RPAREN          reduce using rule 55 (R1 -> function_call .)
+
+
+state 103
+
+    (23) return_stmt -> RETURN SEMICOLON .
+
+    RCURLY          reduce using rule 23 (return_stmt -> RETURN SEMICOLON .)
+
+
+state 104
+
+    (24) return_stmt -> RETURN R2 . SEMICOLON
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    SEMICOLON       shift and go to state 142
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 105
+
+    (21) function_body -> LCURLY stmt_list return_stmt RCURLY .
+
+    VOID            reduce using rule 21 (function_body -> LCURLY stmt_list return_stmt RCURLY .)
+    INT             reduce using rule 21 (function_body -> LCURLY stmt_list return_stmt RCURLY .)
+    FLOAT           reduce using rule 21 (function_body -> LCURLY stmt_list return_stmt RCURLY .)
+    $end            reduce using rule 21 (function_body -> LCURLY stmt_list return_stmt RCURLY .)
+
+
+state 106
+
+    (73) PName -> AMPERSAND NAME .
+
+    PLUS            reduce using rule 73 (PName -> AMPERSAND NAME .)
+    MINUS           reduce using rule 73 (PName -> AMPERSAND NAME .)
+    STAR            reduce using rule 73 (PName -> AMPERSAND NAME .)
+    DIVIDE          reduce using rule 73 (PName -> AMPERSAND NAME .)
+    SEMICOLON       reduce using rule 73 (PName -> AMPERSAND NAME .)
+    RPAREN          reduce using rule 73 (PName -> AMPERSAND NAME .)
+    COMMA           reduce using rule 73 (PName -> AMPERSAND NAME .)
+    GT              reduce using rule 73 (PName -> AMPERSAND NAME .)
+    LT              reduce using rule 73 (PName -> AMPERSAND NAME .)
+    GE              reduce using rule 73 (PName -> AMPERSAND NAME .)
+    LE              reduce using rule 73 (PName -> AMPERSAND NAME .)
+    EQ              reduce using rule 73 (PName -> AMPERSAND NAME .)
+    NE              reduce using rule 73 (PName -> AMPERSAND NAME .)
+    AND             reduce using rule 73 (PName -> AMPERSAND NAME .)
+    OR              reduce using rule 73 (PName -> AMPERSAND NAME .)
+
+
+state 107
+
+    (74) function_call -> NAME LPAREN . arg_list RPAREN
+    (75) function_call -> NAME LPAREN . RPAREN
+    (76) arg_list -> . R2 COMMA arg_list
+    (77) arg_list -> . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    RPAREN          shift and go to state 145
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    arg_list                       shift and go to state 144
+    R2                             shift and go to state 143
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 108
+
+    (72) PName -> STAR NAME .
+
+    PLUS            reduce using rule 72 (PName -> STAR NAME .)
+    MINUS           reduce using rule 72 (PName -> STAR NAME .)
+    STAR            reduce using rule 72 (PName -> STAR NAME .)
+    DIVIDE          reduce using rule 72 (PName -> STAR NAME .)
+    SEMICOLON       reduce using rule 72 (PName -> STAR NAME .)
+    RPAREN          reduce using rule 72 (PName -> STAR NAME .)
+    COMMA           reduce using rule 72 (PName -> STAR NAME .)
+    GT              reduce using rule 72 (PName -> STAR NAME .)
+    LT              reduce using rule 72 (PName -> STAR NAME .)
+    GE              reduce using rule 72 (PName -> STAR NAME .)
+    LE              reduce using rule 72 (PName -> STAR NAME .)
+    EQ              reduce using rule 72 (PName -> STAR NAME .)
+    NE              reduce using rule 72 (PName -> STAR NAME .)
+    AND             reduce using rule 72 (PName -> STAR NAME .)
+    OR              reduce using rule 72 (PName -> STAR NAME .)
+
+
+state 109
+
+    (71) PName -> STAR PName .
+
+    PLUS            reduce using rule 71 (PName -> STAR PName .)
+    MINUS           reduce using rule 71 (PName -> STAR PName .)
+    STAR            reduce using rule 71 (PName -> STAR PName .)
+    DIVIDE          reduce using rule 71 (PName -> STAR PName .)
+    SEMICOLON       reduce using rule 71 (PName -> STAR PName .)
+    RPAREN          reduce using rule 71 (PName -> STAR PName .)
+    COMMA           reduce using rule 71 (PName -> STAR PName .)
+    GT              reduce using rule 71 (PName -> STAR PName .)
+    LT              reduce using rule 71 (PName -> STAR PName .)
+    GE              reduce using rule 71 (PName -> STAR PName .)
+    LE              reduce using rule 71 (PName -> STAR PName .)
+    EQ              reduce using rule 71 (PName -> STAR PName .)
+    NE              reduce using rule 71 (PName -> STAR PName .)
+    AND             reduce using rule 71 (PName -> STAR PName .)
+    OR              reduce using rule 71 (PName -> STAR PName .)
+
+
+state 110
+
+    (65) R2 -> LPAREN R2 . RPAREN
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    RPAREN          shift and go to state 146
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 111
+
+    (62) R2 -> R2 MINUS . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 147
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 112
+
+    (61) R2 -> R2 PLUS . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 148
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 113
+
+    (63) R2 -> R2 STAR . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 149
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 114
+
+    (64) R2 -> R2 DIVIDE . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 150
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 115
+
+    (38) assign -> L2 EQUALS R2 SEMICOLON .
+
+    IF              reduce using rule 38 (assign -> L2 EQUALS R2 SEMICOLON .)
+    WHILE           reduce using rule 38 (assign -> L2 EQUALS R2 SEMICOLON .)
+    NAME            reduce using rule 38 (assign -> L2 EQUALS R2 SEMICOLON .)
+    STAR            reduce using rule 38 (assign -> L2 EQUALS R2 SEMICOLON .)
+    INT             reduce using rule 38 (assign -> L2 EQUALS R2 SEMICOLON .)
+    FLOAT           reduce using rule 38 (assign -> L2 EQUALS R2 SEMICOLON .)
+    RCURLY          reduce using rule 38 (assign -> L2 EQUALS R2 SEMICOLON .)
+    RETURN          reduce using rule 38 (assign -> L2 EQUALS R2 SEMICOLON .)
+    ELSE            reduce using rule 38 (assign -> L2 EQUALS R2 SEMICOLON .)
+
+
+state 116
+
+    (66) R2 -> MINUS R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    GT              reduce using rule 66 (R2 -> MINUS R2 .)
+    LT              reduce using rule 66 (R2 -> MINUS R2 .)
+    GE              reduce using rule 66 (R2 -> MINUS R2 .)
+    LE              reduce using rule 66 (R2 -> MINUS R2 .)
+    EQ              reduce using rule 66 (R2 -> MINUS R2 .)
+    NE              reduce using rule 66 (R2 -> MINUS R2 .)
+    PLUS            reduce using rule 66 (R2 -> MINUS R2 .)
+    MINUS           reduce using rule 66 (R2 -> MINUS R2 .)
+    DIVIDE          reduce using rule 66 (R2 -> MINUS R2 .)
+    RPAREN          reduce using rule 66 (R2 -> MINUS R2 .)
+    AND             reduce using rule 66 (R2 -> MINUS R2 .)
+    OR              reduce using rule 66 (R2 -> MINUS R2 .)
+    SEMICOLON       reduce using rule 66 (R2 -> MINUS R2 .)
+    COMMA           reduce using rule 66 (R2 -> MINUS R2 .)
+    STAR            shift and go to state 113
+
+  ! STAR            [ reduce using rule 66 (R2 -> MINUS R2 .) ]
+  ! PLUS            [ shift and go to state 112 ]
+  ! MINUS           [ shift and go to state 111 ]
+  ! DIVIDE          [ shift and go to state 114 ]
+
+
+state 117
+
+    (87) condition -> condition AND . condition
+    (87) condition -> . condition AND condition
+    (88) condition -> . condition OR condition
+    (89) condition -> . LPAREN condition RPAREN
+    (90) condition -> . NOT condition
+    (91) condition -> . R2 GT R2
+    (92) condition -> . R2 LT R2
+    (93) condition -> . R2 GE R2
+    (94) condition -> . R2 LE R2
+    (95) condition -> . R2 EQ R2
+    (96) condition -> . R2 NE R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 91
+    NOT             shift and go to state 92
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    condition                      shift and go to state 151
+    R2                             shift and go to state 93
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 118
+
+    (83) matched_loop -> WHILE LPAREN condition RPAREN . matched_stmt
+    (84) matched_loop -> WHILE LPAREN condition RPAREN . body
+    (85) matched_loop -> WHILE LPAREN condition RPAREN . SEMICOLON
+    (86) unmatched_loop -> WHILE LPAREN condition RPAREN . unmatched_stmt
+    (31) matched_stmt -> . assign
+    (32) matched_stmt -> . declaration
+    (33) matched_stmt -> . matched_decision
+    (34) matched_stmt -> . matched_loop
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+    (35) unmatched_stmt -> . unmatched_decision
+    (36) unmatched_stmt -> . unmatched_loop
+    (37) assign -> . L1 EQUALS R1 SEMICOLON
+    (38) assign -> . L2 EQUALS R2 SEMICOLON
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (97) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> . IF LPAREN condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> . IF LPAREN condition RPAREN body ELSE body
+    (101) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> . IF LPAREN condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+    (83) matched_loop -> . WHILE LPAREN condition RPAREN matched_stmt
+    (84) matched_loop -> . WHILE LPAREN condition RPAREN body
+    (85) matched_loop -> . WHILE LPAREN condition RPAREN SEMICOLON
+    (106) unmatched_decision -> . IF LPAREN condition RPAREN stmt
+    (107) unmatched_decision -> . IF LPAREN condition RPAREN body
+    (108) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON
+    (109) unmatched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> . IF LPAREN condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+    (86) unmatched_loop -> . WHILE LPAREN condition RPAREN unmatched_stmt
+    (39) L1 -> . NAME
+    (59) L2 -> . STAR L2
+    (60) L2 -> . STAR NAME
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    SEMICOLON       shift and go to state 154
+    LCURLY          shift and go to state 35
+    IF              shift and go to state 55
+    WHILE           shift and go to state 47
+    NAME            shift and go to state 57
+    STAR            shift and go to state 59
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    L2                             shift and go to state 46
+    body                           shift and go to state 152
+    unmatched_decision             shift and go to state 51
+    declaration                    shift and go to state 48
+    unmatched_loop                 shift and go to state 49
+    matched_loop                   shift and go to state 50
+    TYPE                           shift and go to state 54
+    L1                             shift and go to state 58
+    matched_stmt                   shift and go to state 155
+    matched_decision               shift and go to state 53
+    assign                         shift and go to state 62
+    unmatched_stmt                 shift and go to state 153
+
+state 119
+
+    (88) condition -> condition OR . condition
+    (87) condition -> . condition AND condition
+    (88) condition -> . condition OR condition
+    (89) condition -> . LPAREN condition RPAREN
+    (90) condition -> . NOT condition
+    (91) condition -> . R2 GT R2
+    (92) condition -> . R2 LT R2
+    (93) condition -> . R2 GE R2
+    (94) condition -> . R2 LE R2
+    (95) condition -> . R2 EQ R2
+    (96) condition -> . R2 NE R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 91
+    NOT             shift and go to state 92
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    condition                      shift and go to state 156
+    R2                             shift and go to state 93
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 120
+
+    (89) condition -> LPAREN condition . RPAREN
+    (87) condition -> condition . AND condition
+    (88) condition -> condition . OR condition
+
+    RPAREN          shift and go to state 157
+    AND             shift and go to state 117
+    OR              shift and go to state 119
+
+
+state 121
+
+    (65) R2 -> LPAREN R2 . RPAREN
+    (91) condition -> R2 . GT R2
+    (92) condition -> R2 . LT R2
+    (93) condition -> R2 . GE R2
+    (94) condition -> R2 . LE R2
+    (95) condition -> R2 . EQ R2
+    (96) condition -> R2 . NE R2
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    RPAREN          shift and go to state 146
+    GT              shift and go to state 126
+    LT              shift and go to state 128
+    GE              shift and go to state 123
+    LE              shift and go to state 127
+    EQ              shift and go to state 125
+    NE              shift and go to state 124
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 122
+
+    (90) condition -> NOT condition .
+    (87) condition -> condition . AND condition
+    (88) condition -> condition . OR condition
+
+    RPAREN          reduce using rule 90 (condition -> NOT condition .)
+    AND             reduce using rule 90 (condition -> NOT condition .)
+    OR              reduce using rule 90 (condition -> NOT condition .)
+
+  ! AND             [ shift and go to state 117 ]
+  ! OR              [ shift and go to state 119 ]
+
+
+state 123
+
+    (93) condition -> R2 GE . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 158
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 124
+
+    (96) condition -> R2 NE . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 159
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 125
+
+    (95) condition -> R2 EQ . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 160
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 126
+
+    (91) condition -> R2 GT . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 161
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 127
+
+    (94) condition -> R2 LE . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 162
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 128
+
+    (92) condition -> R2 LT . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R2                             shift and go to state 163
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 129
+
+    (97) matched_decision -> IF LPAREN condition RPAREN . matched_stmt ELSE matched_stmt
+    (98) matched_decision -> IF LPAREN condition RPAREN . matched_stmt ELSE body
+    (99) matched_decision -> IF LPAREN condition RPAREN . body ELSE matched_stmt
+    (100) matched_decision -> IF LPAREN condition RPAREN . body ELSE body
+    (101) matched_decision -> IF LPAREN condition RPAREN . matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> IF LPAREN condition RPAREN . body ELSE SEMICOLON
+    (103) matched_decision -> IF LPAREN condition RPAREN . SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> IF LPAREN condition RPAREN . SEMICOLON ELSE body
+    (105) matched_decision -> IF LPAREN condition RPAREN . SEMICOLON ELSE SEMICOLON
+    (106) unmatched_decision -> IF LPAREN condition RPAREN . stmt
+    (107) unmatched_decision -> IF LPAREN condition RPAREN . body
+    (108) unmatched_decision -> IF LPAREN condition RPAREN . SEMICOLON
+    (109) unmatched_decision -> IF LPAREN condition RPAREN . matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> IF LPAREN condition RPAREN . body ELSE unmatched_stmt
+    (111) unmatched_decision -> IF LPAREN condition RPAREN . SEMICOLON ELSE unmatched_stmt
+    (31) matched_stmt -> . assign
+    (32) matched_stmt -> . declaration
+    (33) matched_stmt -> . matched_decision
+    (34) matched_stmt -> . matched_loop
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+    (29) stmt -> . matched_stmt
+    (30) stmt -> . unmatched_stmt
+    (37) assign -> . L1 EQUALS R1 SEMICOLON
+    (38) assign -> . L2 EQUALS R2 SEMICOLON
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (97) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> . IF LPAREN condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> . IF LPAREN condition RPAREN body ELSE body
+    (101) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> . IF LPAREN condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+    (83) matched_loop -> . WHILE LPAREN condition RPAREN matched_stmt
+    (84) matched_loop -> . WHILE LPAREN condition RPAREN body
+    (85) matched_loop -> . WHILE LPAREN condition RPAREN SEMICOLON
+    (35) unmatched_stmt -> . unmatched_decision
+    (36) unmatched_stmt -> . unmatched_loop
+    (39) L1 -> . NAME
+    (59) L2 -> . STAR L2
+    (60) L2 -> . STAR NAME
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+    (106) unmatched_decision -> . IF LPAREN condition RPAREN stmt
+    (107) unmatched_decision -> . IF LPAREN condition RPAREN body
+    (108) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON
+    (109) unmatched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> . IF LPAREN condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+    (86) unmatched_loop -> . WHILE LPAREN condition RPAREN unmatched_stmt
+
+    SEMICOLON       shift and go to state 165
+    LCURLY          shift and go to state 35
+    IF              shift and go to state 55
+    WHILE           shift and go to state 47
+    NAME            shift and go to state 57
+    STAR            shift and go to state 59
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    L2                             shift and go to state 46
+    unmatched_loop                 shift and go to state 49
+    declaration                    shift and go to state 48
+    body                           shift and go to state 164
+    TYPE                           shift and go to state 54
+    matched_loop                   shift and go to state 50
+    unmatched_decision             shift and go to state 51
+    L1                             shift and go to state 58
+    stmt                           shift and go to state 166
+    matched_stmt                   shift and go to state 167
+    matched_decision               shift and go to state 53
+    assign                         shift and go to state 62
+    unmatched_stmt                 shift and go to state 56
+
+state 130
+
+    (44) R1 -> ALLNUM PLUS . R1
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 100
+    MINUS           shift and go to state 101
+    NAME            shift and go to state 96
+    NUMBER          shift and go to state 97
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 168
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 98
+    function_call                  shift and go to state 102
+
+state 131
+
+    (46) R1 -> ALLNUM STAR . R1
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 100
+    MINUS           shift and go to state 101
+    NAME            shift and go to state 96
+    NUMBER          shift and go to state 97
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 169
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 98
+    function_call                  shift and go to state 102
+
+state 132
+
+    (47) R1 -> ALLNUM DIVIDE . R1
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 100
+    MINUS           shift and go to state 101
+    NAME            shift and go to state 96
+    NUMBER          shift and go to state 97
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 170
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 98
+    function_call                  shift and go to state 102
+
+state 133
+
+    (45) R1 -> ALLNUM MINUS . R1
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 100
+    MINUS           shift and go to state 101
+    NAME            shift and go to state 96
+    NUMBER          shift and go to state 97
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 171
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 98
+    function_call                  shift and go to state 102
+
+state 134
+
+    (41) R1 -> R1 MINUS . ALLNUM
+    (49) R1 -> R1 MINUS . R1
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    NUMBER          shift and go to state 97
+    MINUS           shift and go to state 174
+    LPAREN          shift and go to state 100
+    NAME            shift and go to state 96
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 173
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 172
+    function_call                  shift and go to state 102
+
+state 135
+
+    (40) R1 -> R1 PLUS . ALLNUM
+    (48) R1 -> R1 PLUS . R1
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    NUMBER          shift and go to state 97
+    MINUS           shift and go to state 174
+    LPAREN          shift and go to state 100
+    NAME            shift and go to state 96
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 175
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 176
+    function_call                  shift and go to state 102
+
+state 136
+
+    (42) R1 -> R1 STAR . ALLNUM
+    (50) R1 -> R1 STAR . R1
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    NUMBER          shift and go to state 97
+    MINUS           shift and go to state 174
+    LPAREN          shift and go to state 100
+    NAME            shift and go to state 96
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 177
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 178
+    function_call                  shift and go to state 102
+
+state 137
+
+    (43) R1 -> R1 DIVIDE . ALLNUM
+    (51) R1 -> R1 DIVIDE . R1
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    NUMBER          shift and go to state 97
+    MINUS           shift and go to state 174
+    LPAREN          shift and go to state 100
+    NAME            shift and go to state 96
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 179
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 180
+    function_call                  shift and go to state 102
+
+state 138
+
+    (37) assign -> L1 EQUALS R1 SEMICOLON .
+
+    IF              reduce using rule 37 (assign -> L1 EQUALS R1 SEMICOLON .)
+    WHILE           reduce using rule 37 (assign -> L1 EQUALS R1 SEMICOLON .)
+    NAME            reduce using rule 37 (assign -> L1 EQUALS R1 SEMICOLON .)
+    STAR            reduce using rule 37 (assign -> L1 EQUALS R1 SEMICOLON .)
+    INT             reduce using rule 37 (assign -> L1 EQUALS R1 SEMICOLON .)
+    FLOAT           reduce using rule 37 (assign -> L1 EQUALS R1 SEMICOLON .)
+    RCURLY          reduce using rule 37 (assign -> L1 EQUALS R1 SEMICOLON .)
+    RETURN          reduce using rule 37 (assign -> L1 EQUALS R1 SEMICOLON .)
+    ELSE            reduce using rule 37 (assign -> L1 EQUALS R1 SEMICOLON .)
+
+
+state 139
+
+    (52) R1 -> LPAREN R1 . RPAREN
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    RPAREN          shift and go to state 181
+    PLUS            shift and go to state 135
+    MINUS           shift and go to state 134
+    STAR            shift and go to state 136
+    DIVIDE          shift and go to state 137
+
+
+state 140
+
+    (58) ALLNUM -> MINUS ALLNUM .
+    (44) R1 -> ALLNUM . PLUS R1
+    (45) R1 -> ALLNUM . MINUS R1
+    (46) R1 -> ALLNUM . STAR R1
+    (47) R1 -> ALLNUM . DIVIDE R1
+
+    PLUS            reduce using rule 58 (ALLNUM -> MINUS ALLNUM .)
+    MINUS           reduce using rule 58 (ALLNUM -> MINUS ALLNUM .)
+    DIVIDE          reduce using rule 58 (ALLNUM -> MINUS ALLNUM .)
+    SEMICOLON       reduce using rule 58 (ALLNUM -> MINUS ALLNUM .)
+    RPAREN          reduce using rule 58 (ALLNUM -> MINUS ALLNUM .)
+    STAR            shift and go to state 131
+
+  ! STAR            [ reduce using rule 58 (ALLNUM -> MINUS ALLNUM .) ]
+  ! PLUS            [ shift and go to state 130 ]
+  ! MINUS           [ shift and go to state 133 ]
+  ! DIVIDE          [ shift and go to state 132 ]
+
+
+state 141
+
+    (53) R1 -> MINUS R1 .
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    PLUS            reduce using rule 53 (R1 -> MINUS R1 .)
+    MINUS           reduce using rule 53 (R1 -> MINUS R1 .)
+    DIVIDE          reduce using rule 53 (R1 -> MINUS R1 .)
+    SEMICOLON       reduce using rule 53 (R1 -> MINUS R1 .)
+    RPAREN          reduce using rule 53 (R1 -> MINUS R1 .)
+    STAR            shift and go to state 136
+
+  ! STAR            [ reduce using rule 53 (R1 -> MINUS R1 .) ]
+  ! PLUS            [ shift and go to state 135 ]
+  ! MINUS           [ shift and go to state 134 ]
+  ! DIVIDE          [ shift and go to state 137 ]
+
+
+state 142
+
+    (24) return_stmt -> RETURN R2 SEMICOLON .
+
+    RCURLY          reduce using rule 24 (return_stmt -> RETURN R2 SEMICOLON .)
+
+
+state 143
+
+    (76) arg_list -> R2 . COMMA arg_list
+    (77) arg_list -> R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    COMMA           shift and go to state 182
+    RPAREN          reduce using rule 77 (arg_list -> R2 .)
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 144
+
+    (74) function_call -> NAME LPAREN arg_list . RPAREN
+
+    RPAREN          shift and go to state 183
+
+
+state 145
+
+    (75) function_call -> NAME LPAREN RPAREN .
+
+    GT              reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    LT              reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    GE              reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    LE              reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    EQ              reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    NE              reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    PLUS            reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    MINUS           reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    STAR            reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    DIVIDE          reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    SEMICOLON       reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    RPAREN          reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    COMMA           reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    AND             reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+    OR              reduce using rule 75 (function_call -> NAME LPAREN RPAREN .)
+
+
+state 146
+
+    (65) R2 -> LPAREN R2 RPAREN .
+
+    GT              reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    LT              reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    GE              reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    LE              reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    EQ              reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    NE              reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    PLUS            reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    MINUS           reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    STAR            reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    DIVIDE          reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    RPAREN          reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    AND             reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    OR              reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    SEMICOLON       reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+    COMMA           reduce using rule 65 (R2 -> LPAREN R2 RPAREN .)
+
+
+state 147
+
+    (62) R2 -> R2 MINUS R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    GT              reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    LT              reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    GE              reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    LE              reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    EQ              reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    NE              reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    PLUS            reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    MINUS           reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    RPAREN          reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    AND             reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    OR              reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    SEMICOLON       reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    COMMA           reduce using rule 62 (R2 -> R2 MINUS R2 .)
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+  ! STAR            [ reduce using rule 62 (R2 -> R2 MINUS R2 .) ]
+  ! DIVIDE          [ reduce using rule 62 (R2 -> R2 MINUS R2 .) ]
+  ! PLUS            [ shift and go to state 112 ]
+  ! MINUS           [ shift and go to state 111 ]
+
+
+state 148
+
+    (61) R2 -> R2 PLUS R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    GT              reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    LT              reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    GE              reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    LE              reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    EQ              reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    NE              reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    PLUS            reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    MINUS           reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    RPAREN          reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    AND             reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    OR              reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    SEMICOLON       reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    COMMA           reduce using rule 61 (R2 -> R2 PLUS R2 .)
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+  ! STAR            [ reduce using rule 61 (R2 -> R2 PLUS R2 .) ]
+  ! DIVIDE          [ reduce using rule 61 (R2 -> R2 PLUS R2 .) ]
+  ! PLUS            [ shift and go to state 112 ]
+  ! MINUS           [ shift and go to state 111 ]
+
+
+state 149
+
+    (63) R2 -> R2 STAR R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    GT              reduce using rule 63 (R2 -> R2 STAR R2 .)
+    LT              reduce using rule 63 (R2 -> R2 STAR R2 .)
+    GE              reduce using rule 63 (R2 -> R2 STAR R2 .)
+    LE              reduce using rule 63 (R2 -> R2 STAR R2 .)
+    EQ              reduce using rule 63 (R2 -> R2 STAR R2 .)
+    NE              reduce using rule 63 (R2 -> R2 STAR R2 .)
+    PLUS            reduce using rule 63 (R2 -> R2 STAR R2 .)
+    MINUS           reduce using rule 63 (R2 -> R2 STAR R2 .)
+    DIVIDE          reduce using rule 63 (R2 -> R2 STAR R2 .)
+    RPAREN          reduce using rule 63 (R2 -> R2 STAR R2 .)
+    AND             reduce using rule 63 (R2 -> R2 STAR R2 .)
+    OR              reduce using rule 63 (R2 -> R2 STAR R2 .)
+    SEMICOLON       reduce using rule 63 (R2 -> R2 STAR R2 .)
+    COMMA           reduce using rule 63 (R2 -> R2 STAR R2 .)
+    STAR            shift and go to state 113
+
+  ! STAR            [ reduce using rule 63 (R2 -> R2 STAR R2 .) ]
+  ! PLUS            [ shift and go to state 112 ]
+  ! MINUS           [ shift and go to state 111 ]
+  ! DIVIDE          [ shift and go to state 114 ]
+
+
+state 150
+
+    (64) R2 -> R2 DIVIDE R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    GT              reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    LT              reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    GE              reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    LE              reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    EQ              reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    NE              reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    PLUS            reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    MINUS           reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    DIVIDE          reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    RPAREN          reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    AND             reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    OR              reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    SEMICOLON       reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    COMMA           reduce using rule 64 (R2 -> R2 DIVIDE R2 .)
+    STAR            shift and go to state 113
+
+  ! STAR            [ reduce using rule 64 (R2 -> R2 DIVIDE R2 .) ]
+  ! PLUS            [ shift and go to state 112 ]
+  ! MINUS           [ shift and go to state 111 ]
+  ! DIVIDE          [ shift and go to state 114 ]
+
+
+state 151
+
+    (87) condition -> condition AND condition .
+    (87) condition -> condition . AND condition
+    (88) condition -> condition . OR condition
+
+    RPAREN          reduce using rule 87 (condition -> condition AND condition .)
+    AND             reduce using rule 87 (condition -> condition AND condition .)
+    OR              reduce using rule 87 (condition -> condition AND condition .)
+
+  ! AND             [ shift and go to state 117 ]
+  ! OR              [ shift and go to state 119 ]
+
+
+state 152
+
+    (84) matched_loop -> WHILE LPAREN condition RPAREN body .
+
+    IF              reduce using rule 84 (matched_loop -> WHILE LPAREN condition RPAREN body .)
+    WHILE           reduce using rule 84 (matched_loop -> WHILE LPAREN condition RPAREN body .)
+    NAME            reduce using rule 84 (matched_loop -> WHILE LPAREN condition RPAREN body .)
+    STAR            reduce using rule 84 (matched_loop -> WHILE LPAREN condition RPAREN body .)
+    INT             reduce using rule 84 (matched_loop -> WHILE LPAREN condition RPAREN body .)
+    FLOAT           reduce using rule 84 (matched_loop -> WHILE LPAREN condition RPAREN body .)
+    RCURLY          reduce using rule 84 (matched_loop -> WHILE LPAREN condition RPAREN body .)
+    RETURN          reduce using rule 84 (matched_loop -> WHILE LPAREN condition RPAREN body .)
+    ELSE            reduce using rule 84 (matched_loop -> WHILE LPAREN condition RPAREN body .)
+
+
+state 153
+
+    (86) unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt .
+
+    IF              reduce using rule 86 (unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt .)
+    WHILE           reduce using rule 86 (unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt .)
+    NAME            reduce using rule 86 (unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt .)
+    STAR            reduce using rule 86 (unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt .)
+    INT             reduce using rule 86 (unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt .)
+    FLOAT           reduce using rule 86 (unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt .)
+    RCURLY          reduce using rule 86 (unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt .)
+    RETURN          reduce using rule 86 (unmatched_loop -> WHILE LPAREN condition RPAREN unmatched_stmt .)
+
+
+state 154
+
+    (85) matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .
+
+    IF              reduce using rule 85 (matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .)
+    WHILE           reduce using rule 85 (matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .)
+    NAME            reduce using rule 85 (matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .)
+    STAR            reduce using rule 85 (matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .)
+    INT             reduce using rule 85 (matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 85 (matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .)
+    RCURLY          reduce using rule 85 (matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .)
+    RETURN          reduce using rule 85 (matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .)
+    ELSE            reduce using rule 85 (matched_loop -> WHILE LPAREN condition RPAREN SEMICOLON .)
+
+
+state 155
+
+    (83) matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .
+
+    IF              reduce using rule 83 (matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .)
+    WHILE           reduce using rule 83 (matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .)
+    NAME            reduce using rule 83 (matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .)
+    STAR            reduce using rule 83 (matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .)
+    INT             reduce using rule 83 (matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .)
+    FLOAT           reduce using rule 83 (matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .)
+    RCURLY          reduce using rule 83 (matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .)
+    RETURN          reduce using rule 83 (matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .)
+    ELSE            reduce using rule 83 (matched_loop -> WHILE LPAREN condition RPAREN matched_stmt .)
+
+
+state 156
+
+    (88) condition -> condition OR condition .
+    (87) condition -> condition . AND condition
+    (88) condition -> condition . OR condition
+
+    RPAREN          reduce using rule 88 (condition -> condition OR condition .)
+    OR              reduce using rule 88 (condition -> condition OR condition .)
+    AND             shift and go to state 117
+
+  ! AND             [ reduce using rule 88 (condition -> condition OR condition .) ]
+  ! OR              [ shift and go to state 119 ]
+
+
+state 157
+
+    (89) condition -> LPAREN condition RPAREN .
+
+    RPAREN          reduce using rule 89 (condition -> LPAREN condition RPAREN .)
+    AND             reduce using rule 89 (condition -> LPAREN condition RPAREN .)
+    OR              reduce using rule 89 (condition -> LPAREN condition RPAREN .)
+
+
+state 158
+
+    (93) condition -> R2 GE R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    RPAREN          reduce using rule 93 (condition -> R2 GE R2 .)
+    AND             reduce using rule 93 (condition -> R2 GE R2 .)
+    OR              reduce using rule 93 (condition -> R2 GE R2 .)
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 159
+
+    (96) condition -> R2 NE R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    RPAREN          reduce using rule 96 (condition -> R2 NE R2 .)
+    AND             reduce using rule 96 (condition -> R2 NE R2 .)
+    OR              reduce using rule 96 (condition -> R2 NE R2 .)
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 160
+
+    (95) condition -> R2 EQ R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    RPAREN          reduce using rule 95 (condition -> R2 EQ R2 .)
+    AND             reduce using rule 95 (condition -> R2 EQ R2 .)
+    OR              reduce using rule 95 (condition -> R2 EQ R2 .)
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 161
+
+    (91) condition -> R2 GT R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    RPAREN          reduce using rule 91 (condition -> R2 GT R2 .)
+    AND             reduce using rule 91 (condition -> R2 GT R2 .)
+    OR              reduce using rule 91 (condition -> R2 GT R2 .)
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 162
+
+    (94) condition -> R2 LE R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    RPAREN          reduce using rule 94 (condition -> R2 LE R2 .)
+    AND             reduce using rule 94 (condition -> R2 LE R2 .)
+    OR              reduce using rule 94 (condition -> R2 LE R2 .)
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 163
+
+    (92) condition -> R2 LT R2 .
+    (61) R2 -> R2 . PLUS R2
+    (62) R2 -> R2 . MINUS R2
+    (63) R2 -> R2 . STAR R2
+    (64) R2 -> R2 . DIVIDE R2
+
+    RPAREN          reduce using rule 92 (condition -> R2 LT R2 .)
+    AND             reduce using rule 92 (condition -> R2 LT R2 .)
+    OR              reduce using rule 92 (condition -> R2 LT R2 .)
+    PLUS            shift and go to state 112
+    MINUS           shift and go to state 111
+    STAR            shift and go to state 113
+    DIVIDE          shift and go to state 114
+
+
+state 164
+
+    (99) matched_decision -> IF LPAREN condition RPAREN body . ELSE matched_stmt
+    (100) matched_decision -> IF LPAREN condition RPAREN body . ELSE body
+    (102) matched_decision -> IF LPAREN condition RPAREN body . ELSE SEMICOLON
+    (107) unmatched_decision -> IF LPAREN condition RPAREN body .
+    (110) unmatched_decision -> IF LPAREN condition RPAREN body . ELSE unmatched_stmt
+
+    ELSE            shift and go to state 184
+    IF              reduce using rule 107 (unmatched_decision -> IF LPAREN condition RPAREN body .)
+    WHILE           reduce using rule 107 (unmatched_decision -> IF LPAREN condition RPAREN body .)
+    NAME            reduce using rule 107 (unmatched_decision -> IF LPAREN condition RPAREN body .)
+    STAR            reduce using rule 107 (unmatched_decision -> IF LPAREN condition RPAREN body .)
+    INT             reduce using rule 107 (unmatched_decision -> IF LPAREN condition RPAREN body .)
+    FLOAT           reduce using rule 107 (unmatched_decision -> IF LPAREN condition RPAREN body .)
+    RCURLY          reduce using rule 107 (unmatched_decision -> IF LPAREN condition RPAREN body .)
+    RETURN          reduce using rule 107 (unmatched_decision -> IF LPAREN condition RPAREN body .)
+
+
+state 165
+
+    (103) matched_decision -> IF LPAREN condition RPAREN SEMICOLON . ELSE matched_stmt
+    (104) matched_decision -> IF LPAREN condition RPAREN SEMICOLON . ELSE body
+    (105) matched_decision -> IF LPAREN condition RPAREN SEMICOLON . ELSE SEMICOLON
+    (108) unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON .
+    (111) unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON . ELSE unmatched_stmt
+
+    ELSE            shift and go to state 185
+    IF              reduce using rule 108 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON .)
+    WHILE           reduce using rule 108 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON .)
+    NAME            reduce using rule 108 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON .)
+    STAR            reduce using rule 108 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON .)
+    INT             reduce using rule 108 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 108 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON .)
+    RCURLY          reduce using rule 108 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON .)
+    RETURN          reduce using rule 108 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON .)
+
+
+state 166
+
+    (106) unmatched_decision -> IF LPAREN condition RPAREN stmt .
+
+    IF              reduce using rule 106 (unmatched_decision -> IF LPAREN condition RPAREN stmt .)
+    WHILE           reduce using rule 106 (unmatched_decision -> IF LPAREN condition RPAREN stmt .)
+    NAME            reduce using rule 106 (unmatched_decision -> IF LPAREN condition RPAREN stmt .)
+    STAR            reduce using rule 106 (unmatched_decision -> IF LPAREN condition RPAREN stmt .)
+    INT             reduce using rule 106 (unmatched_decision -> IF LPAREN condition RPAREN stmt .)
+    FLOAT           reduce using rule 106 (unmatched_decision -> IF LPAREN condition RPAREN stmt .)
+    RCURLY          reduce using rule 106 (unmatched_decision -> IF LPAREN condition RPAREN stmt .)
+    RETURN          reduce using rule 106 (unmatched_decision -> IF LPAREN condition RPAREN stmt .)
+
+
+state 167
+
+    (97) matched_decision -> IF LPAREN condition RPAREN matched_stmt . ELSE matched_stmt
+    (98) matched_decision -> IF LPAREN condition RPAREN matched_stmt . ELSE body
+    (101) matched_decision -> IF LPAREN condition RPAREN matched_stmt . ELSE SEMICOLON
+    (109) unmatched_decision -> IF LPAREN condition RPAREN matched_stmt . ELSE unmatched_stmt
+    (29) stmt -> matched_stmt .
+
+    ELSE            shift and go to state 186
+    IF              reduce using rule 29 (stmt -> matched_stmt .)
+    WHILE           reduce using rule 29 (stmt -> matched_stmt .)
+    NAME            reduce using rule 29 (stmt -> matched_stmt .)
+    STAR            reduce using rule 29 (stmt -> matched_stmt .)
+    INT             reduce using rule 29 (stmt -> matched_stmt .)
+    FLOAT           reduce using rule 29 (stmt -> matched_stmt .)
+    RCURLY          reduce using rule 29 (stmt -> matched_stmt .)
+    RETURN          reduce using rule 29 (stmt -> matched_stmt .)
+
+
+state 168
+
+    (44) R1 -> ALLNUM PLUS R1 .
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    PLUS            reduce using rule 44 (R1 -> ALLNUM PLUS R1 .)
+    MINUS           reduce using rule 44 (R1 -> ALLNUM PLUS R1 .)
+    SEMICOLON       reduce using rule 44 (R1 -> ALLNUM PLUS R1 .)
+    RPAREN          reduce using rule 44 (R1 -> ALLNUM PLUS R1 .)
+    STAR            shift and go to state 136
+    DIVIDE          shift and go to state 137
+
+  ! STAR            [ reduce using rule 44 (R1 -> ALLNUM PLUS R1 .) ]
+  ! DIVIDE          [ reduce using rule 44 (R1 -> ALLNUM PLUS R1 .) ]
+  ! PLUS            [ shift and go to state 135 ]
+  ! MINUS           [ shift and go to state 134 ]
+
+
+state 169
+
+    (46) R1 -> ALLNUM STAR R1 .
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    PLUS            reduce using rule 46 (R1 -> ALLNUM STAR R1 .)
+    MINUS           reduce using rule 46 (R1 -> ALLNUM STAR R1 .)
+    DIVIDE          reduce using rule 46 (R1 -> ALLNUM STAR R1 .)
+    SEMICOLON       reduce using rule 46 (R1 -> ALLNUM STAR R1 .)
+    RPAREN          reduce using rule 46 (R1 -> ALLNUM STAR R1 .)
+    STAR            shift and go to state 136
+
+  ! STAR            [ reduce using rule 46 (R1 -> ALLNUM STAR R1 .) ]
+  ! PLUS            [ shift and go to state 135 ]
+  ! MINUS           [ shift and go to state 134 ]
+  ! DIVIDE          [ shift and go to state 137 ]
+
+
+state 170
+
+    (47) R1 -> ALLNUM DIVIDE R1 .
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    PLUS            reduce using rule 47 (R1 -> ALLNUM DIVIDE R1 .)
+    MINUS           reduce using rule 47 (R1 -> ALLNUM DIVIDE R1 .)
+    DIVIDE          reduce using rule 47 (R1 -> ALLNUM DIVIDE R1 .)
+    SEMICOLON       reduce using rule 47 (R1 -> ALLNUM DIVIDE R1 .)
+    RPAREN          reduce using rule 47 (R1 -> ALLNUM DIVIDE R1 .)
+    STAR            shift and go to state 136
+
+  ! STAR            [ reduce using rule 47 (R1 -> ALLNUM DIVIDE R1 .) ]
+  ! PLUS            [ shift and go to state 135 ]
+  ! MINUS           [ shift and go to state 134 ]
+  ! DIVIDE          [ shift and go to state 137 ]
+
+
+state 171
+
+    (45) R1 -> ALLNUM MINUS R1 .
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    PLUS            reduce using rule 45 (R1 -> ALLNUM MINUS R1 .)
+    MINUS           reduce using rule 45 (R1 -> ALLNUM MINUS R1 .)
+    SEMICOLON       reduce using rule 45 (R1 -> ALLNUM MINUS R1 .)
+    RPAREN          reduce using rule 45 (R1 -> ALLNUM MINUS R1 .)
+    STAR            shift and go to state 136
+    DIVIDE          shift and go to state 137
+
+  ! STAR            [ reduce using rule 45 (R1 -> ALLNUM MINUS R1 .) ]
+  ! DIVIDE          [ reduce using rule 45 (R1 -> ALLNUM MINUS R1 .) ]
+  ! PLUS            [ shift and go to state 135 ]
+  ! MINUS           [ shift and go to state 134 ]
+
+
+state 172
+
+    (41) R1 -> R1 MINUS ALLNUM .
+    (44) R1 -> ALLNUM . PLUS R1
+    (45) R1 -> ALLNUM . MINUS R1
+    (46) R1 -> ALLNUM . STAR R1
+    (47) R1 -> ALLNUM . DIVIDE R1
+
+    PLUS            reduce using rule 41 (R1 -> R1 MINUS ALLNUM .)
+    MINUS           reduce using rule 41 (R1 -> R1 MINUS ALLNUM .)
+    SEMICOLON       reduce using rule 41 (R1 -> R1 MINUS ALLNUM .)
+    RPAREN          reduce using rule 41 (R1 -> R1 MINUS ALLNUM .)
+    STAR            shift and go to state 131
+    DIVIDE          shift and go to state 132
+
+  ! STAR            [ reduce using rule 41 (R1 -> R1 MINUS ALLNUM .) ]
+  ! DIVIDE          [ reduce using rule 41 (R1 -> R1 MINUS ALLNUM .) ]
+  ! PLUS            [ shift and go to state 130 ]
+  ! MINUS           [ shift and go to state 133 ]
+
+
+state 173
+
+    (49) R1 -> R1 MINUS R1 .
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    PLUS            reduce using rule 49 (R1 -> R1 MINUS R1 .)
+    MINUS           reduce using rule 49 (R1 -> R1 MINUS R1 .)
+    SEMICOLON       reduce using rule 49 (R1 -> R1 MINUS R1 .)
+    RPAREN          reduce using rule 49 (R1 -> R1 MINUS R1 .)
+    STAR            shift and go to state 136
+    DIVIDE          shift and go to state 137
+
+  ! STAR            [ reduce using rule 49 (R1 -> R1 MINUS R1 .) ]
+  ! DIVIDE          [ reduce using rule 49 (R1 -> R1 MINUS R1 .) ]
+  ! PLUS            [ shift and go to state 135 ]
+  ! MINUS           [ shift and go to state 134 ]
+
+
+state 174
+
+    (58) ALLNUM -> MINUS . ALLNUM
+    (53) R1 -> MINUS . R1
+    (57) ALLNUM -> . NUMBER
+    (58) ALLNUM -> . MINUS ALLNUM
+    (40) R1 -> . R1 PLUS ALLNUM
+    (41) R1 -> . R1 MINUS ALLNUM
+    (42) R1 -> . R1 STAR ALLNUM
+    (43) R1 -> . R1 DIVIDE ALLNUM
+    (44) R1 -> . ALLNUM PLUS R1
+    (45) R1 -> . ALLNUM MINUS R1
+    (46) R1 -> . ALLNUM STAR R1
+    (47) R1 -> . ALLNUM DIVIDE R1
+    (48) R1 -> . R1 PLUS R1
+    (49) R1 -> . R1 MINUS R1
+    (50) R1 -> . R1 STAR R1
+    (51) R1 -> . R1 DIVIDE R1
+    (52) R1 -> . LPAREN R1 RPAREN
+    (53) R1 -> . MINUS R1
+    (54) R1 -> . PName
+    (55) R1 -> . function_call
+    (56) R1 -> . NAME
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    NUMBER          shift and go to state 97
+    MINUS           shift and go to state 174
+    LPAREN          shift and go to state 100
+    NAME            shift and go to state 96
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    R1                             shift and go to state 141
+    PName                          shift and go to state 95
+    ALLNUM                         shift and go to state 140
+    function_call                  shift and go to state 102
+
+state 175
+
+    (48) R1 -> R1 PLUS R1 .
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    PLUS            reduce using rule 48 (R1 -> R1 PLUS R1 .)
+    MINUS           reduce using rule 48 (R1 -> R1 PLUS R1 .)
+    SEMICOLON       reduce using rule 48 (R1 -> R1 PLUS R1 .)
+    RPAREN          reduce using rule 48 (R1 -> R1 PLUS R1 .)
+    STAR            shift and go to state 136
+    DIVIDE          shift and go to state 137
+
+  ! STAR            [ reduce using rule 48 (R1 -> R1 PLUS R1 .) ]
+  ! DIVIDE          [ reduce using rule 48 (R1 -> R1 PLUS R1 .) ]
+  ! PLUS            [ shift and go to state 135 ]
+  ! MINUS           [ shift and go to state 134 ]
+
+
+state 176
+
+    (40) R1 -> R1 PLUS ALLNUM .
+    (44) R1 -> ALLNUM . PLUS R1
+    (45) R1 -> ALLNUM . MINUS R1
+    (46) R1 -> ALLNUM . STAR R1
+    (47) R1 -> ALLNUM . DIVIDE R1
+
+    PLUS            reduce using rule 40 (R1 -> R1 PLUS ALLNUM .)
+    MINUS           reduce using rule 40 (R1 -> R1 PLUS ALLNUM .)
+    SEMICOLON       reduce using rule 40 (R1 -> R1 PLUS ALLNUM .)
+    RPAREN          reduce using rule 40 (R1 -> R1 PLUS ALLNUM .)
+    STAR            shift and go to state 131
+    DIVIDE          shift and go to state 132
+
+  ! STAR            [ reduce using rule 40 (R1 -> R1 PLUS ALLNUM .) ]
+  ! DIVIDE          [ reduce using rule 40 (R1 -> R1 PLUS ALLNUM .) ]
+  ! PLUS            [ shift and go to state 130 ]
+  ! MINUS           [ shift and go to state 133 ]
+
+
+state 177
+
+    (50) R1 -> R1 STAR R1 .
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    PLUS            reduce using rule 50 (R1 -> R1 STAR R1 .)
+    MINUS           reduce using rule 50 (R1 -> R1 STAR R1 .)
+    DIVIDE          reduce using rule 50 (R1 -> R1 STAR R1 .)
+    SEMICOLON       reduce using rule 50 (R1 -> R1 STAR R1 .)
+    RPAREN          reduce using rule 50 (R1 -> R1 STAR R1 .)
+    STAR            shift and go to state 136
+
+  ! STAR            [ reduce using rule 50 (R1 -> R1 STAR R1 .) ]
+  ! PLUS            [ shift and go to state 135 ]
+  ! MINUS           [ shift and go to state 134 ]
+  ! DIVIDE          [ shift and go to state 137 ]
+
+
+state 178
+
+    (42) R1 -> R1 STAR ALLNUM .
+    (44) R1 -> ALLNUM . PLUS R1
+    (45) R1 -> ALLNUM . MINUS R1
+    (46) R1 -> ALLNUM . STAR R1
+    (47) R1 -> ALLNUM . DIVIDE R1
+
+    PLUS            reduce using rule 42 (R1 -> R1 STAR ALLNUM .)
+    MINUS           reduce using rule 42 (R1 -> R1 STAR ALLNUM .)
+    DIVIDE          reduce using rule 42 (R1 -> R1 STAR ALLNUM .)
+    SEMICOLON       reduce using rule 42 (R1 -> R1 STAR ALLNUM .)
+    RPAREN          reduce using rule 42 (R1 -> R1 STAR ALLNUM .)
+    STAR            shift and go to state 131
+
+  ! STAR            [ reduce using rule 42 (R1 -> R1 STAR ALLNUM .) ]
+  ! PLUS            [ shift and go to state 130 ]
+  ! MINUS           [ shift and go to state 133 ]
+  ! DIVIDE          [ shift and go to state 132 ]
+
+
+state 179
+
+    (51) R1 -> R1 DIVIDE R1 .
+    (40) R1 -> R1 . PLUS ALLNUM
+    (41) R1 -> R1 . MINUS ALLNUM
+    (42) R1 -> R1 . STAR ALLNUM
+    (43) R1 -> R1 . DIVIDE ALLNUM
+    (48) R1 -> R1 . PLUS R1
+    (49) R1 -> R1 . MINUS R1
+    (50) R1 -> R1 . STAR R1
+    (51) R1 -> R1 . DIVIDE R1
+
+    PLUS            reduce using rule 51 (R1 -> R1 DIVIDE R1 .)
+    MINUS           reduce using rule 51 (R1 -> R1 DIVIDE R1 .)
+    DIVIDE          reduce using rule 51 (R1 -> R1 DIVIDE R1 .)
+    SEMICOLON       reduce using rule 51 (R1 -> R1 DIVIDE R1 .)
+    RPAREN          reduce using rule 51 (R1 -> R1 DIVIDE R1 .)
+    STAR            shift and go to state 136
+
+  ! STAR            [ reduce using rule 51 (R1 -> R1 DIVIDE R1 .) ]
+  ! PLUS            [ shift and go to state 135 ]
+  ! MINUS           [ shift and go to state 134 ]
+  ! DIVIDE          [ shift and go to state 137 ]
+
+
+state 180
+
+    (43) R1 -> R1 DIVIDE ALLNUM .
+    (44) R1 -> ALLNUM . PLUS R1
+    (45) R1 -> ALLNUM . MINUS R1
+    (46) R1 -> ALLNUM . STAR R1
+    (47) R1 -> ALLNUM . DIVIDE R1
+
+    PLUS            reduce using rule 43 (R1 -> R1 DIVIDE ALLNUM .)
+    MINUS           reduce using rule 43 (R1 -> R1 DIVIDE ALLNUM .)
+    DIVIDE          reduce using rule 43 (R1 -> R1 DIVIDE ALLNUM .)
+    SEMICOLON       reduce using rule 43 (R1 -> R1 DIVIDE ALLNUM .)
+    RPAREN          reduce using rule 43 (R1 -> R1 DIVIDE ALLNUM .)
+    STAR            shift and go to state 131
+
+  ! STAR            [ reduce using rule 43 (R1 -> R1 DIVIDE ALLNUM .) ]
+  ! PLUS            [ shift and go to state 130 ]
+  ! MINUS           [ shift and go to state 133 ]
+  ! DIVIDE          [ shift and go to state 132 ]
+
+
+state 181
+
+    (52) R1 -> LPAREN R1 RPAREN .
+
+    PLUS            reduce using rule 52 (R1 -> LPAREN R1 RPAREN .)
+    MINUS           reduce using rule 52 (R1 -> LPAREN R1 RPAREN .)
+    STAR            reduce using rule 52 (R1 -> LPAREN R1 RPAREN .)
+    DIVIDE          reduce using rule 52 (R1 -> LPAREN R1 RPAREN .)
+    SEMICOLON       reduce using rule 52 (R1 -> LPAREN R1 RPAREN .)
+    RPAREN          reduce using rule 52 (R1 -> LPAREN R1 RPAREN .)
+
+
+state 182
+
+    (76) arg_list -> R2 COMMA . arg_list
+    (76) arg_list -> . R2 COMMA arg_list
+    (77) arg_list -> . R2
+    (61) R2 -> . R2 PLUS R2
+    (62) R2 -> . R2 MINUS R2
+    (63) R2 -> . R2 STAR R2
+    (64) R2 -> . R2 DIVIDE R2
+    (65) R2 -> . LPAREN R2 RPAREN
+    (66) R2 -> . MINUS R2
+    (67) R2 -> . PName
+    (68) R2 -> . function_call
+    (69) R2 -> . NAME
+    (70) R2 -> . NUMBER
+    (71) PName -> . STAR PName
+    (72) PName -> . STAR NAME
+    (73) PName -> . AMPERSAND NAME
+    (74) function_call -> . NAME LPAREN arg_list RPAREN
+    (75) function_call -> . NAME LPAREN RPAREN
+
+    LPAREN          shift and go to state 86
+    MINUS           shift and go to state 88
+    NAME            shift and go to state 83
+    NUMBER          shift and go to state 84
+    STAR            shift and go to state 85
+    AMPERSAND       shift and go to state 81
+
+    arg_list                       shift and go to state 187
+    R2                             shift and go to state 143
+    PName                          shift and go to state 82
+    function_call                  shift and go to state 89
+
+state 183
+
+    (74) function_call -> NAME LPAREN arg_list RPAREN .
+
+    GT              reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    LT              reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    GE              reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    LE              reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    EQ              reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    NE              reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    PLUS            reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    MINUS           reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    STAR            reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    DIVIDE          reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    SEMICOLON       reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    RPAREN          reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    COMMA           reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    AND             reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+    OR              reduce using rule 74 (function_call -> NAME LPAREN arg_list RPAREN .)
+
+
+state 184
+
+    (99) matched_decision -> IF LPAREN condition RPAREN body ELSE . matched_stmt
+    (100) matched_decision -> IF LPAREN condition RPAREN body ELSE . body
+    (102) matched_decision -> IF LPAREN condition RPAREN body ELSE . SEMICOLON
+    (110) unmatched_decision -> IF LPAREN condition RPAREN body ELSE . unmatched_stmt
+    (31) matched_stmt -> . assign
+    (32) matched_stmt -> . declaration
+    (33) matched_stmt -> . matched_decision
+    (34) matched_stmt -> . matched_loop
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+    (35) unmatched_stmt -> . unmatched_decision
+    (36) unmatched_stmt -> . unmatched_loop
+    (37) assign -> . L1 EQUALS R1 SEMICOLON
+    (38) assign -> . L2 EQUALS R2 SEMICOLON
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (97) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> . IF LPAREN condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> . IF LPAREN condition RPAREN body ELSE body
+    (101) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> . IF LPAREN condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+    (83) matched_loop -> . WHILE LPAREN condition RPAREN matched_stmt
+    (84) matched_loop -> . WHILE LPAREN condition RPAREN body
+    (85) matched_loop -> . WHILE LPAREN condition RPAREN SEMICOLON
+    (106) unmatched_decision -> . IF LPAREN condition RPAREN stmt
+    (107) unmatched_decision -> . IF LPAREN condition RPAREN body
+    (108) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON
+    (109) unmatched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> . IF LPAREN condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+    (86) unmatched_loop -> . WHILE LPAREN condition RPAREN unmatched_stmt
+    (39) L1 -> . NAME
+    (59) L2 -> . STAR L2
+    (60) L2 -> . STAR NAME
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    SEMICOLON       shift and go to state 190
+    LCURLY          shift and go to state 35
+    IF              shift and go to state 55
+    WHILE           shift and go to state 47
+    NAME            shift and go to state 57
+    STAR            shift and go to state 59
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    L2                             shift and go to state 46
+    body                           shift and go to state 188
+    unmatched_decision             shift and go to state 51
+    declaration                    shift and go to state 48
+    unmatched_loop                 shift and go to state 49
+    matched_loop                   shift and go to state 50
+    TYPE                           shift and go to state 54
+    L1                             shift and go to state 58
+    matched_stmt                   shift and go to state 191
+    matched_decision               shift and go to state 53
+    assign                         shift and go to state 62
+    unmatched_stmt                 shift and go to state 189
+
+state 185
+
+    (103) matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE . matched_stmt
+    (104) matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE . body
+    (105) matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE . SEMICOLON
+    (111) unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE . unmatched_stmt
+    (31) matched_stmt -> . assign
+    (32) matched_stmt -> . declaration
+    (33) matched_stmt -> . matched_decision
+    (34) matched_stmt -> . matched_loop
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+    (35) unmatched_stmt -> . unmatched_decision
+    (36) unmatched_stmt -> . unmatched_loop
+    (37) assign -> . L1 EQUALS R1 SEMICOLON
+    (38) assign -> . L2 EQUALS R2 SEMICOLON
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (97) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> . IF LPAREN condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> . IF LPAREN condition RPAREN body ELSE body
+    (101) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> . IF LPAREN condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+    (83) matched_loop -> . WHILE LPAREN condition RPAREN matched_stmt
+    (84) matched_loop -> . WHILE LPAREN condition RPAREN body
+    (85) matched_loop -> . WHILE LPAREN condition RPAREN SEMICOLON
+    (106) unmatched_decision -> . IF LPAREN condition RPAREN stmt
+    (107) unmatched_decision -> . IF LPAREN condition RPAREN body
+    (108) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON
+    (109) unmatched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> . IF LPAREN condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+    (86) unmatched_loop -> . WHILE LPAREN condition RPAREN unmatched_stmt
+    (39) L1 -> . NAME
+    (59) L2 -> . STAR L2
+    (60) L2 -> . STAR NAME
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    SEMICOLON       shift and go to state 194
+    LCURLY          shift and go to state 35
+    IF              shift and go to state 55
+    WHILE           shift and go to state 47
+    NAME            shift and go to state 57
+    STAR            shift and go to state 59
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    L2                             shift and go to state 46
+    body                           shift and go to state 192
+    unmatched_decision             shift and go to state 51
+    declaration                    shift and go to state 48
+    unmatched_loop                 shift and go to state 49
+    matched_loop                   shift and go to state 50
+    TYPE                           shift and go to state 54
+    L1                             shift and go to state 58
+    matched_stmt                   shift and go to state 195
+    matched_decision               shift and go to state 53
+    assign                         shift and go to state 62
+    unmatched_stmt                 shift and go to state 193
+
+state 186
+
+    (97) matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE . matched_stmt
+    (98) matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE . body
+    (101) matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE . SEMICOLON
+    (109) unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE . unmatched_stmt
+    (31) matched_stmt -> . assign
+    (32) matched_stmt -> . declaration
+    (33) matched_stmt -> . matched_decision
+    (34) matched_stmt -> . matched_loop
+    (25) body -> . LCURLY stmt_list RCURLY
+    (26) body -> . LCURLY RCURLY
+    (35) unmatched_stmt -> . unmatched_decision
+    (36) unmatched_stmt -> . unmatched_loop
+    (37) assign -> . L1 EQUALS R1 SEMICOLON
+    (38) assign -> . L2 EQUALS R2 SEMICOLON
+    (78) declaration -> . TYPE varlist SEMICOLON
+    (97) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt
+    (98) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE body
+    (99) matched_decision -> . IF LPAREN condition RPAREN body ELSE matched_stmt
+    (100) matched_decision -> . IF LPAREN condition RPAREN body ELSE body
+    (101) matched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON
+    (102) matched_decision -> . IF LPAREN condition RPAREN body ELSE SEMICOLON
+    (103) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt
+    (104) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE body
+    (105) matched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON
+    (83) matched_loop -> . WHILE LPAREN condition RPAREN matched_stmt
+    (84) matched_loop -> . WHILE LPAREN condition RPAREN body
+    (85) matched_loop -> . WHILE LPAREN condition RPAREN SEMICOLON
+    (106) unmatched_decision -> . IF LPAREN condition RPAREN stmt
+    (107) unmatched_decision -> . IF LPAREN condition RPAREN body
+    (108) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON
+    (109) unmatched_decision -> . IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt
+    (110) unmatched_decision -> . IF LPAREN condition RPAREN body ELSE unmatched_stmt
+    (111) unmatched_decision -> . IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt
+    (86) unmatched_loop -> . WHILE LPAREN condition RPAREN unmatched_stmt
+    (39) L1 -> . NAME
+    (59) L2 -> . STAR L2
+    (60) L2 -> . STAR NAME
+    (19) TYPE -> . INT
+    (20) TYPE -> . FLOAT
+
+    SEMICOLON       shift and go to state 198
+    LCURLY          shift and go to state 35
+    IF              shift and go to state 55
+    WHILE           shift and go to state 47
+    NAME            shift and go to state 57
+    STAR            shift and go to state 59
+    INT             shift and go to state 3
+    FLOAT           shift and go to state 1
+
+    L2                             shift and go to state 46
+    body                           shift and go to state 196
+    unmatched_decision             shift and go to state 51
+    declaration                    shift and go to state 48
+    unmatched_loop                 shift and go to state 49
+    matched_loop                   shift and go to state 50
+    TYPE                           shift and go to state 54
+    L1                             shift and go to state 58
+    matched_stmt                   shift and go to state 199
+    matched_decision               shift and go to state 53
+    assign                         shift and go to state 62
+    unmatched_stmt                 shift and go to state 197
+
+state 187
+
+    (76) arg_list -> R2 COMMA arg_list .
+
+    RPAREN          reduce using rule 76 (arg_list -> R2 COMMA arg_list .)
+
+
+state 188
+
+    (100) matched_decision -> IF LPAREN condition RPAREN body ELSE body .
+
+    IF              reduce using rule 100 (matched_decision -> IF LPAREN condition RPAREN body ELSE body .)
+    WHILE           reduce using rule 100 (matched_decision -> IF LPAREN condition RPAREN body ELSE body .)
+    NAME            reduce using rule 100 (matched_decision -> IF LPAREN condition RPAREN body ELSE body .)
+    STAR            reduce using rule 100 (matched_decision -> IF LPAREN condition RPAREN body ELSE body .)
+    INT             reduce using rule 100 (matched_decision -> IF LPAREN condition RPAREN body ELSE body .)
+    FLOAT           reduce using rule 100 (matched_decision -> IF LPAREN condition RPAREN body ELSE body .)
+    RCURLY          reduce using rule 100 (matched_decision -> IF LPAREN condition RPAREN body ELSE body .)
+    RETURN          reduce using rule 100 (matched_decision -> IF LPAREN condition RPAREN body ELSE body .)
+    ELSE            reduce using rule 100 (matched_decision -> IF LPAREN condition RPAREN body ELSE body .)
+
+
+state 189
+
+    (110) unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt .
+
+    IF              reduce using rule 110 (unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt .)
+    WHILE           reduce using rule 110 (unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt .)
+    NAME            reduce using rule 110 (unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt .)
+    STAR            reduce using rule 110 (unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt .)
+    INT             reduce using rule 110 (unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt .)
+    FLOAT           reduce using rule 110 (unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt .)
+    RCURLY          reduce using rule 110 (unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt .)
+    RETURN          reduce using rule 110 (unmatched_decision -> IF LPAREN condition RPAREN body ELSE unmatched_stmt .)
+
+
+state 190
+
+    (102) matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .
+
+    IF              reduce using rule 102 (matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .)
+    WHILE           reduce using rule 102 (matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .)
+    NAME            reduce using rule 102 (matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .)
+    STAR            reduce using rule 102 (matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .)
+    INT             reduce using rule 102 (matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .)
+    FLOAT           reduce using rule 102 (matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .)
+    RCURLY          reduce using rule 102 (matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .)
+    RETURN          reduce using rule 102 (matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .)
+    ELSE            reduce using rule 102 (matched_decision -> IF LPAREN condition RPAREN body ELSE SEMICOLON .)
+
+
+state 191
+
+    (99) matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .
+
+    IF              reduce using rule 99 (matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .)
+    WHILE           reduce using rule 99 (matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .)
+    NAME            reduce using rule 99 (matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .)
+    STAR            reduce using rule 99 (matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .)
+    INT             reduce using rule 99 (matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .)
+    FLOAT           reduce using rule 99 (matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .)
+    RCURLY          reduce using rule 99 (matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .)
+    RETURN          reduce using rule 99 (matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .)
+    ELSE            reduce using rule 99 (matched_decision -> IF LPAREN condition RPAREN body ELSE matched_stmt .)
+
+
+state 192
+
+    (104) matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .
+
+    IF              reduce using rule 104 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .)
+    WHILE           reduce using rule 104 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .)
+    NAME            reduce using rule 104 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .)
+    STAR            reduce using rule 104 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .)
+    INT             reduce using rule 104 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .)
+    FLOAT           reduce using rule 104 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .)
+    RCURLY          reduce using rule 104 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .)
+    RETURN          reduce using rule 104 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .)
+    ELSE            reduce using rule 104 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE body .)
+
+
+state 193
+
+    (111) unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt .
+
+    IF              reduce using rule 111 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt .)
+    WHILE           reduce using rule 111 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt .)
+    NAME            reduce using rule 111 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt .)
+    STAR            reduce using rule 111 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt .)
+    INT             reduce using rule 111 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt .)
+    FLOAT           reduce using rule 111 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt .)
+    RCURLY          reduce using rule 111 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt .)
+    RETURN          reduce using rule 111 (unmatched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE unmatched_stmt .)
+
+
+state 194
+
+    (105) matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .
+
+    IF              reduce using rule 105 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .)
+    WHILE           reduce using rule 105 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .)
+    NAME            reduce using rule 105 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .)
+    STAR            reduce using rule 105 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .)
+    INT             reduce using rule 105 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .)
+    FLOAT           reduce using rule 105 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .)
+    RCURLY          reduce using rule 105 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .)
+    RETURN          reduce using rule 105 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .)
+    ELSE            reduce using rule 105 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE SEMICOLON .)
+
+
+state 195
+
+    (103) matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .
+
+    IF              reduce using rule 103 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .)
+    WHILE           reduce using rule 103 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .)
+    NAME            reduce using rule 103 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .)
+    STAR            reduce using rule 103 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .)
+    INT             reduce using rule 103 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .)
+    FLOAT           reduce using rule 103 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .)
+    RCURLY          reduce using rule 103 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .)
+    RETURN          reduce using rule 103 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .)
+    ELSE            reduce using rule 103 (matched_decision -> IF LPAREN condition RPAREN SEMICOLON ELSE matched_stmt .)
+
+
+state 196
+
+    (98) matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .
+
+    IF              reduce using rule 98 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .)
+    WHILE           reduce using rule 98 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .)
+    NAME            reduce using rule 98 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .)
+    STAR            reduce using rule 98 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .)
+    INT             reduce using rule 98 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .)
+    FLOAT           reduce using rule 98 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .)
+    RCURLY          reduce using rule 98 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .)
+    RETURN          reduce using rule 98 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .)
+    ELSE            reduce using rule 98 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE body .)
+
+
+state 197
+
+    (109) unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt .
+
+    IF              reduce using rule 109 (unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt .)
+    WHILE           reduce using rule 109 (unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt .)
+    NAME            reduce using rule 109 (unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt .)
+    STAR            reduce using rule 109 (unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt .)
+    INT             reduce using rule 109 (unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt .)
+    FLOAT           reduce using rule 109 (unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt .)
+    RCURLY          reduce using rule 109 (unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt .)
+    RETURN          reduce using rule 109 (unmatched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE unmatched_stmt .)
+
+
+state 198
+
+    (101) matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .
+
+    IF              reduce using rule 101 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .)
+    WHILE           reduce using rule 101 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .)
+    NAME            reduce using rule 101 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .)
+    STAR            reduce using rule 101 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .)
+    INT             reduce using rule 101 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .)
+    FLOAT           reduce using rule 101 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .)
+    RCURLY          reduce using rule 101 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .)
+    RETURN          reduce using rule 101 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .)
+    ELSE            reduce using rule 101 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE SEMICOLON .)
+
+
+state 199
+
+    (97) matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .
+
+    IF              reduce using rule 97 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .)
+    WHILE           reduce using rule 97 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .)
+    NAME            reduce using rule 97 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .)
+    STAR            reduce using rule 97 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .)
+    INT             reduce using rule 97 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .)
+    FLOAT           reduce using rule 97 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .)
+    RCURLY          reduce using rule 97 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .)
+    RETURN          reduce using rule 97 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .)
+    ELSE            reduce using rule 97 (matched_decision -> IF LPAREN condition RPAREN matched_stmt ELSE matched_stmt .)
+

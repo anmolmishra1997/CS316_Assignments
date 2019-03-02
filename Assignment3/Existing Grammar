@@ -1,0 +1,78 @@
+'program : VOID MAIN LPAREN RPAREN body'
+
+body : LCURLY stmt_list RCURLY
+        | LCURLY RCURLY
+
+        stmt_list : stmt SEMICOLON stmt_list
+                    | stmt SEMICOLON
+
+
+stmt : assign
+    | declaration
+    | loop
+    | control
+
+loop : WHILE LPAREN condition RPAREN LCURLY stmt_list RCURLY
+
+assign : L1 EQUALS R1_exp
+        | L2 EQUALS R1_exp
+        | L2 EQUALS R2_exp
+
+L1 : NAME_REC
+
+R1_exp : R1_exp PLUS R2_exp
+        | R1_exp MINUS R2_exp
+        | R1_exp STAR R2_exp %prec MULTIPLY
+        | R1_exp DIVIDE R2_exp
+        | R2_exp PLUS R1_exp
+        | R2_exp MINUS R1_exp
+        | R2_exp STAR R1_exp %prec MULTIPLY
+        | R2_exp DIVIDE R1_exp
+        | R1_exp PLUS R1_exp
+        | R1_exp MINUS R1_exp
+        | R1_exp STAR R1_exp %prec MULTIPLY
+        | R1_exp DIVIDE R1_exp
+
+
+R1_exp : MINUS R1_exp %prec UMINUS
+
+R1_exp : NAME_REC
+    | STAR R1_exp
+    | AMPERSAND R1_exp
+
+
+L2 : STAR NAME_REC
+    | STAR L2_recur
+
+      L2_recur : STAR L2_recur
+              | AMPERSAND L2_recur
+              | STAR NAME_REC
+              | AMPERSAND NAME_REC
+
+              R2_exp : R2_exp PLUS R2_exp
+                      | R2_exp MINUS R2_exp
+                      | R2_exp STAR R2_exp %prec MULTIPLY
+                      | R2_exp DIVIDE R2_exp
+
+R2_exp : MINUS R2_exp %prec UMINUS
+
+R2_exp : NUMBER_REC
+
+NUMBER_REC : NUMBER
+
+NAME_REC : NAME
+
+STARPLUS : STAR STARPLUS
+        | STAR
+
+declaration : INT varlist
+
+varlist : var COMMA varlist
+        | var
+
+        var : var_ptr
+            | var_id
+
+var_ptr : STARPLUS NAME
+
+var_id : NAME

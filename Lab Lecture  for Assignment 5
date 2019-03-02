@@ -1,0 +1,16 @@
+Register Allocation - It is done to speed up the access of particular variables which are frequently used. 
+Mapping of values into variables. Keep the value in a register. Instead of accessing from memory, access from register.
+
+Two tpyes -
+1. Register Allocation -  
+	Global Register Allocation - Throughout the execution, we would like to keep the value in register as long as possible. Limited registers, hence a challenge to maintain this allocation. 
+	Done using graph coloring problem. Colors are registers, nodes are registers, interference are edges. ()
+	Other strategies which require the length of time etc. are more complicated and not covered in our course.
+
+	Local Register Allocation - Assigning registers to temporary variables. 
+
+2. Function Call Resolution -
+
+	Caller and callee have assigned roles.
+	Fixed roles.
+	Mentioned in the notes.
